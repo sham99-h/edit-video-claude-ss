@@ -141,11 +141,6 @@
    "dur": 3.2333
   },
   {
-   "id": "pesanan",
-   "start": 35.9333,
-   "dur": 2.2667
-  },
-  {
    "id": "cta",
    "start": 43.8667,
    "dur": 4.1667
@@ -186,11 +181,6 @@
    "name": "impact-bass-1",
    "at": 29.33,
    "vol": 0.2
-  },
-  {
-   "name": "pop",
-   "at": 36.15,
-   "vol": 0.7
   },
   {
    "name": "whoosh",

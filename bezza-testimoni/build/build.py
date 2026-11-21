@@ -295,15 +295,6 @@ card("minggu", ms, me, f"""
     tl.to("#mg-wrap", {{opacity:0, y:-30, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(me - 0.22, ms)});
 """)
 
-# --- QUESTION chip ------------------------------------------------------------
-qs, qe = seg_start("k") + 0.05, seg_end("l1") - 0.9
-card("pesanan", qs, qe, """
-    <div id="ps-chip" class="chip red" style="left:0;right:0;margin:auto;width:600px;text-align:center;top:340px;font-size:40px;">Pesanan untuk anda?</div>
-""", f"""
-    tl.fromTo("#ps-chip", {{opacity:0, scale:0.7}}, {{opacity:1, scale:1, duration:0.35, ease:"back.out(1.8)"}}, 0);
-    tl.to("#ps-chip", {{opacity:0, y:-20, duration:0.18, ease:"power3.in"}}, {rel(qe - 0.2, qs)});
-""")
-
 # --- CTA ----------------------------------------------------------------------------
 os_, oe = seg_start("o") + 0.2, T["salam"] - 0.1
 card("cta", os_, oe, """
@@ -351,7 +342,6 @@ SFX = [
     ("pop",           ds + 0.2,         0.8),    # delivery card
     ("pop",           ks + 0.3,         0.8),    # KALI KE-2
     ("impact-bass-1", T["minggu1"] + 0.1, 0.2),  # 1 MINGGU slam
-    ("pop",           qs + 0.2,         0.7),    # pesanan chip
     ("whoosh",        CUT_CTA,          0.6),    # jump to CTA flash
     ("pop",           T["berminat"] - 0.1, 0.8),
     ("click",         T["biru"] + 0.18, 1.2),    # button press

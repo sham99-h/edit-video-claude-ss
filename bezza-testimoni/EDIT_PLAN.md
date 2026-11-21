@@ -4,6 +4,10 @@
 **Hasil edit:** 51.2s, 1080×1920, 30fps — **status: PREVIEW DRAF v6 (belum render final)**
 **Preview:** `renders/PREVIEW_bezza_testimoni_v6.mp4` (540×960, watermark)
 
+## Perubahan v7 (belum dirender — lihat `STORYBOARD.jpg`)
+
+- **Kad "PESANAN UNTUK ANDA?" dibuang** (beserta bunyi pop). Bahagian itu kini caption sahaja.
+
 ## Perubahan v6 (ikut feedback)
 
 **Suara semua klip diseimbangkan.** Audio dibina semula dari fail asal (`build/audio_balance.py`):
