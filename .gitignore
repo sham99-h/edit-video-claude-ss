@@ -3,3 +3,6 @@ bezza-testimoni/assets/footage.mp4
 bezza-testimoni/.hyperframes/
 node_modules/
 bezza-testimoni/.transcode-cache/
+bezza-testimoni/renders/work-*/
+bezza-testimoni/renders/._*
+bezza-testimoni/renders/_*.mp4
