@@ -1,8 +1,21 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v8
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v9
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v8 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v8.mp4` (540×960, watermark)
+**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v9 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v9.mp4` (540×960, watermark)
+
+## Perubahan v9 — suara pecah dibaiki
+
+**Punca:** (1) suara Jo di "apa pesanan untuk customer kat luar" sangat perlahan dalam rakaman (−36 dB), jadi dikuatkan +26.5 dB — dan sempadan gain jatuh 0.02s *selepas* customer mula sebut "okay", jadi suara customer pun dikuatkan +26 dB lalu dihimpit limiter (pecah). (2) Di semua klip, puncak selepas gain naik sampai +9 dB atas had dan dihimpit kuat oleh leveller/limiter.
+
+**Baiki (`build/audio_balance.py` ditulis semula):**
+- denoise ringan (afftdn 8 dB) + high-pass 70 Hz pada audio asal
+- gain setiap klip dalam bentuk sampul lancar (ramp), sempadan Jo→customer dialih ke 50.79 dengan ramp 50ms
+- leveller automatik (dynaudnorm) & loudnorm dinamik dibuang → compressor lembut + compressor puncak pantas + normalisasi statik
+- limiter kini hanya sentuh puncak pendek: maks 3.5 dB pada <0.1% sampel (dulu ~25 dB di bahagian pesanan)
+- gain maksimum turun dari +26.5 ke +17.4 dB
+
+Hasil diukur: setiap klip dalam 0.8 dB (Jo ≈ −16.7, customer ≈ −13.8 LUFS, customer +3 dB), mix −14.9 LUFS, true peak −1.2 dBTP, tiada clipping.
 
 ## Perubahan v8 (ikut feedback)
 
@@ -11,7 +24,7 @@
 3. **"Memang" sebelum soalan Jo dipotong** (src 47.45–47.90) → "…dapat kereta. Apa pesanan untuk customer kat luar?"
 4. **Butang "TEKAN BEG BIRU" diturunkan ke tempat caption** (y≈1320) + anak panah di bawahnya; caption "tekan beg biru dekat bawah" dibuang.
 
-## Perubahan v7 (preview: `renders/PREVIEW_bezza_testimoni_v8.mp4`)
+## Perubahan v7 (preview: `renders/PREVIEW_bezza_testimoni_v9.mp4`)
 
 - **Kad "PESANAN UNTUK ANDA?" dibuang** (beserta bunyi pop). Bahagian itu kini caption sahaja.
 
