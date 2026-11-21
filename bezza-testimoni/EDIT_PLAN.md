@@ -1,10 +1,19 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v2
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v3
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 52.7s, 1080×1920, 30fps — **status: PREVIEW DRAF v2 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v2.mp4` (540×960, watermark)
+**Hasil edit:** 52.0s, 1080×1920, 30fps — **status: PREVIEW DRAF v3 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v3.mp4` (540×960, watermark)
 
-## Perubahan v2 (ikut feedback)
+## Perubahan v3 (ikut feedback)
+
+1. **Hook dipercepatkan 1.2×** (suara customer, pitch kekal) — hook kini 3.6s (dulu 4.3s).
+2. **Caption lebih kecil** (maks 64px, dulu 84px) dan **diturunkan ke paras peha** (y≈1340).
+3. **Perkataan "so" dibuang** dari caption ("So apa pesanan", "so korang yang").
+4. **Tajuk hook ditulis penuh dari frame pertama:** "KERETA SAMPAI DALAM **1 MINGGU**" (tak tunggu lagi).
+5. **Suara Jo untuk "apa pesanan untuk customer kat luar?" dikuatkan** ~+4.7 dB (−21.3 → −16.6 LUFS) dengan limiter, tiada clipping.
+6. **"Butang biru" → "beg biru"** di caption dan butang CTA ("TEKAN BEG BIRU").
+
+## Perubahan v2
 
 1. **JOE → JO** di semua tempat: caption, name card, end card, "Bang Jo".
 2. **Hook ditukar:** video sekarang buka dengan *"Memang cepat. Dan kereta pun dapat dalam 1 minggu lebih"* + grafik "KERETA SAMPAI DALAM **1 MINGGU**". Ayat *"Saya buat 3 hari sahaja, dah dapat deal dengan bank"* dipulangkan ke tempat asal (selepas "Ni saya ambil Bezza lah").
@@ -42,7 +51,7 @@
 | 0:35–0:37 | "Pesanan untuk customer?" | chip "PESANAN UNTUK ANDA?" | pop |
 | 0:38.5–0:40.7 | "Dah ambil 2 kali dengan Bang Jo" | "2X BELI KERETA dengan Bang Jo" | whoosh-short |
 | 0:40.7–0:45.4 | "Kalau korang nak dapat loan cepat… ambil dengan Bang Jo" | caption sahaja | — |
-| 0:45.4–0:49.6 | CTA | "BERMINAT?" → butang **TEKAN BUTANG BIRU** + anak panah | whoosh, pop, click |
+| 0:45.4–0:49.6 | CTA | "BERMINAT?" → butang **TEKAN BEG BIRU** + anak panah | whoosh, pop, click |
 | 0:49.6–0:52.7 | End card | **TERIMA KASIH! / JO HASHIM** atas shot thumbs-up | whoosh-short |
 
 **Bahagian dibuang (jumlah ~28s):** "kita nak tengok feedback…" (repeat), "Boleh?" + jeda, "Sepertulah", "Ini bukan iklan", "Serius saya tak dibayar…", "dah dua kali, kali kedua, memang cepat" (repeat), "Ok itu je" + jeda 1.7s, shot kamera jatuh di hujung, dan semua jeda lebih kurang 0.5s.
@@ -52,8 +61,7 @@
 ## Masih perlu disahkan ⚠️
 
 1. "Perodua PJ" (transkripsi dengar "Pro2PJ")
-2. "tekan **butang biru**" (transkripsi dengar "backbiro")
-3. "ambil **kereta** saya yang belakang tu" (perkataan "kereta" diteka)
+2. "ambil **kereta** saya yang belakang tu" (perkataan "kereta" diteka)
 
 ## Cara ubah
 

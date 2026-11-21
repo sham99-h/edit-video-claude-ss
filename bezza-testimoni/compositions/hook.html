@@ -9,16 +9,18 @@
 </style>
   <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-layout-allow-overlap>
 
-    <div id="hk-line" class="box" style="left:150px;right:150px;top:340px;padding:22px 0;text-align:center;font-weight:900;font-size:56px;letter-spacing:-.01em;">KERETA SAMPAI DALAM</div>
-    <div id="hk-big" style="position:absolute;left:0;right:0;top:450px;text-align:center;font-weight:900;font-size:170px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
+    <div id="hk-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
+      <div id="hk-line" style="display:inline-block;background:#111;color:#fff;border-radius:24px;padding:18px 40px;font-weight:900;font-size:56px;">KERETA SAMPAI DALAM</div>
+      <div id="hk-big" style="margin-top:14px;font-weight:900;font-size:160px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
+    </div>
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
 
-    tl.fromTo("#hk-line", {opacity:1, scale:1}, {opacity:1, scale:1, duration:0.01}, 0);
-    tl.fromTo("#hk-big", {opacity:0, scale:2.4}, {opacity:1, scale:1, duration:0.28, ease:"expo.out"}, 3.667);
-    tl.to(["#hk-line","#hk-big"], {opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in", stagger:0.03}, 4.0);
+    tl.fromTo("#hk-wrap", {opacity:1, scale:1}, {opacity:1, scale:1, duration:0.01}, 0);
+    tl.to("#hk-big", {keyframes:[{scale:1.12, duration:0.1, ease:"power2.out"}, {scale:1, duration:0.22, ease:"power2.inOut"}]}, 3.067);
+    tl.to("#hk-wrap", {opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in"}, 3.317);
 
     window.__timelines["hook"] = tl;
   </script>

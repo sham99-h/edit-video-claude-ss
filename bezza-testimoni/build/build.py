@@ -14,6 +14,8 @@ FPS = 30
 W, H = 1080, 1920
 SRC = "assets/footage.mp4"
 SRC_DUR = 80.80
+# footage.mp4 = Drive original, HLG->SDR tonemap, loudnorm -15 LUFS, then
+# Jo's "pesanan" line (src 47.40-50.80) boosted +7 dB with a -1.5 dBFS limiter.
 
 # ---------------------------------------------------------------------------
 # 1. CUT LIST  (id, source_in, source_out, punch scale)
@@ -70,10 +72,12 @@ CORRECTIONS = {
     59.78: ["Bang", "Jo."],       # "banjur"
     64.34: ["repeat"],             # (cut anyway)
     63.20: [],                     # "sebab" (cut region)
-    74.14: ["butang", "biru"],     # "backbiro" (VERIFY)
+    74.14: ["beg", "biru"],        # "backbiro" -> "beg biru" (confirmed by Jo's team)
+    47.20: [],                     # "So" (filler)
+    70.46: [],                     # "so" (filler)
 }
 HIGHLIGHT = {"3", "hari", "bank", "cepat", "1", "minggu", "2", "kedua", "loan",
-             "bang", "jo", "bezza", "rawang", "dibayar", "butang", "biru",
+             "bang", "jo", "bezza", "rawang", "dibayar", "beg", "biru",
              "bukan", "iklan", "kali", "hashim", "serius"}
 
 # ---------------------------------------------------------------------------
@@ -83,18 +87,21 @@ def fr(t):
     """snap to frame"""
     return round(round(t * FPS) / FPS, 4)
 
+# playback speed per segment (pitch-preserved); hook spoken faster
+RATE = {"hook1": 1.2, "hook2": 1.2}
+
 timeline = []  # (id, src_in, src_out, out_start, scale)
 _t = 0.0
 for sid, a, b, sc in SEGMENTS:
     timeline.append((sid, a, b, fr(_t), sc))
-    _t = fr(_t + (b - a))
+    _t = fr(_t + (b - a) / RATE.get(sid, 1.0))
 TOTAL_VIDEO = _t
 
 def out(src_t):
     """map a source time to output time (None if cut)"""
     for sid, a, b, o, sc in timeline:
         if a - 1e-6 <= src_t <= b + 1e-6:
-            return fr(o + (src_t - a))
+            return fr(o + (src_t - a) / RATE.get(sid, 1.0))
     return None
 
 def seg(sid):
@@ -105,7 +112,7 @@ def seg(sid):
 
 def seg_start(sid): return seg(sid)[3]
 def seg_end(sid):
-    s = seg(sid); return fr(s[3] + s[2] - s[1])
+    s = seg(sid); return fr(s[3] + (s[2] - s[1]) / RATE.get(sid, 1.0))
 
 END_HOLD = 0.0
 TOTAL = fr(TOTAL_VIDEO + END_HOLD)
@@ -139,7 +146,7 @@ for w in words:
     if ov < 0.04 and ov < 0.5 * (w["e"] - w["s"]):
         continue
     s_ = max(w["s"], a); e_ = min(w["e"], b)
-    cap.append({"text": w["text"], "seg": sid, "s": fr(o + s_ - a), "e": fr(o + e_ - a), "brk": w.get("brk", False)})
+    cap.append({"text": w["text"], "seg": sid, "s": fr(o + (s_ - a) / RATE.get(sid, 1.0)), "e": fr(o + (e_ - a) / RATE.get(sid, 1.0)), "brk": w.get("brk", False)})
 
 cap.sort(key=lambda w: w["s"])
 # group: <=3 words, break on punctuation / segment change / pause >= .15
@@ -212,12 +219,14 @@ def rel(t, base):  # relative time inside a card
 # --- HOOK ------------------------------------------------------------------
 hs, he = 0.0, seg_end("hook2")
 card("hook", hs, he, f"""
-    <div id="hk-line" class="box" style="left:150px;right:150px;top:340px;padding:22px 0;text-align:center;font-weight:900;font-size:56px;letter-spacing:-.01em;">KERETA SAMPAI DALAM</div>
-    <div id="hk-big" style="position:absolute;left:0;right:0;top:450px;text-align:center;font-weight:900;font-size:170px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
+    <div id="hk-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
+      <div id="hk-line" style="display:inline-block;background:#111;color:#fff;border-radius:24px;padding:18px 40px;font-weight:900;font-size:56px;">KERETA SAMPAI DALAM</div>
+      <div id="hk-big" style="margin-top:14px;font-weight:900;font-size:160px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
+    </div>
 """, f"""
-    tl.fromTo("#hk-line", {{opacity:1, scale:1}}, {{opacity:1, scale:1, duration:0.01}}, 0);
-    tl.fromTo("#hk-big", {{opacity:0, scale:2.4}}, {{opacity:1, scale:1, duration:0.28, ease:"expo.out"}}, {rel(T['minggu1'], hs)});
-    tl.to(["#hk-line","#hk-big"], {{opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in", stagger:0.03}}, {rel(he - 0.3, hs)});
+    tl.fromTo("#hk-wrap", {{opacity:1, scale:1}}, {{opacity:1, scale:1, duration:0.01}}, 0);
+    tl.to("#hk-big", {{keyframes:[{{scale:1.12, duration:0.1, ease:"power2.out"}}, {{scale:1, duration:0.22, ease:"power2.inOut"}}]}}, {rel(T['minggu1'], hs)});
+    tl.to("#hk-wrap", {{opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in"}}, {rel(he - 0.25, hs)});
 """)
 
 # --- NAME (Joe) --------------------------------------------------------------
@@ -304,7 +313,7 @@ card("duakali", bs, be, """
 os_, oe = seg_start("o") + 0.2, T["salam"] - 0.1
 card("cta", os_, oe, """
     <div id="ca-q" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-weight:900;font-size:96px;color:#fff;-webkit-text-stroke:9px #111;paint-order:stroke fill;">BERMINAT?</div>
-    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:740px;top:500px;padding:30px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:900;font-size:54px;box-shadow:0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35);">TEKAN BUTANG BIRU</div>
+    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:740px;top:500px;padding:30px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:900;font-size:54px;box-shadow:0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35);">TEKAN BEG BIRU</div>
     <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:660px;" width="120" height="120" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
 """, f"""
     tl.fromTo("#ca-q", {{opacity:0, scale:1.6}}, {{opacity:1, scale:1, duration:0.3, ease:"expo.out"}}, {rel(T['berminat'] - 0.35, os_)});
@@ -373,7 +382,7 @@ for gi, g in enumerate(groups):
     nxt = groups[gi + 1][0]["s"] - 0.04 if gi + 1 < len(groups) else TOTAL
     ge = fr(min(max(g[-1]["e"] + 0.25, gs + 0.5), nxt, TOTAL - 0.02))
     text_len = sum(len(w["text"]) for w in g) + len(g) - 1
-    fs = int(min(84, 800 / max(1, text_len * 0.70)))
+    fs = int(min(64, 800 / max(1, text_len * 0.70)))
     spans = []
     for wi, w in enumerate(g):
         key = re.sub(r"[^\w]", "", w["text"].lower())
@@ -387,8 +396,8 @@ for gi, g in enumerate(groups):
 
 cap_css = """
 #root{position:absolute;inset:0;font-family:'Montserrat',sans-serif;}
-.cg{position:absolute;left:130px;right:130px;top:1110px;text-align:center;font-weight:900;line-height:1.1;color:#fff;opacity:0;visibility:hidden;overflow:visible;}
-.cw{display:inline-block;-webkit-text-stroke:12px #000;paint-order:stroke fill;text-shadow:0 6px 14px rgba(0,0,0,.45);}
+.cg{position:absolute;left:130px;right:130px;top:1340px;text-align:center;font-weight:900;line-height:1.1;color:#fff;opacity:0;visibility:hidden;overflow:visible;}
+.cw{display:inline-block;-webkit-text-stroke:10px #000;paint-order:stroke fill;text-shadow:0 6px 14px rgba(0,0,0,.45);}
 .cw.hl{color:#FFD400;}
 """
 (comp / "captions.html").write_text(f"""<template>
@@ -407,9 +416,9 @@ cap_css = """
 # root index.html
 vids = []
 for i, (sid, a, b, o, sc) in enumerate(timeline):
-    d = fr(b - a)
+    d = fr((b - a) / RATE.get(sid, 1.0))
     vids.append(f'      <video id="v-{sid}" class="clip" src="{SRC}" data-start="{o}" data-duration="{d}" '
-                f'data-media-start="{a}" data-track-index="0" data-has-audio="true" '
+                f'data-media-start="{a}" data-playback-rate="{RATE.get(sid, 1.0)}" data-track-index="0" data-has-audio="true" '
                 f'data-fade-in="0.02" data-fade-out="0.03" playsinline></video>')
 
 hosts = []
