@@ -1,10 +1,23 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v5
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v6
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 51.2s, 1080×1920, 30fps — **status: PREVIEW DRAF v5 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v5.mp4` (540×960, watermark)
+**Hasil edit:** 51.2s, 1080×1920, 30fps — **status: PREVIEW DRAF v6 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v6.mp4` (540×960, watermark)
 
-## Perubahan v5 (ikut feedback)
+## Perubahan v6 (ikut feedback)
+
+**Suara semua klip diseimbangkan.** Audio dibina semula dari fail asal (`build/audio_balance.py`):
+setiap klip (dipisah ikut siapa bercakap) diberi gain sendiri, diratakan dengan leveller lembut,
+kemudian diukur semula dan dibetulkan 5 kali.
+
+| | Klip paling kuat | Klip paling perlahan | Beza |
+|---|---|---|---|
+| v5 | −11.5 LUFS (customer) | −17.4 LUFS (Jo) | **5.9 dB** |
+| v6 | −13.5 LUFS | −15.8 LUFS | **2.3 dB** (termasuk SFX) |
+
+Mix keseluruhan −14.6 LUFS, true peak −1.0 dBTP, tiada clipping. Bunyi latar tidak naik berbanding v5 (diukur).
+
+## Perubahan v5
 
 1. **"DMM Sales (PJ)" dibuang** dari name card & end card (kini "Perodua" sahaja). Reben fizikal atas kereta masih tertulis DMM Sales — itu dalam footage.
 2. **Caption "sales lain" → "SA lain".**

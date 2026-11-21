@@ -14,9 +14,9 @@ FPS = 30
 W, H = 1080, 1920
 SRC = "assets/footage.mp4"
 SRC_DUR = 80.80
-# footage.mp4 = Drive original, HLG->SDR tonemap, loudnorm -15 LUFS, then
-# Jo's "pesanan" line (src 47.40-50.80) boosted +7 dB with a -1.5 dBFS limiter,
-# then plate VSA 2173 pixelated on every frame (OpenCV CSRT track, see build/plate/).
+# footage.mp4 = Drive original, HLG->SDR tonemap, plate VSA 2173 pixelated on every
+# frame (OpenCV CSRT track, see build/plate/), audio rebuilt by build/audio_balance.py
+# (every clip levelled to the same loudness; re-run it after changing SEGMENTS).
 
 # ---------------------------------------------------------------------------
 # 1. CUT LIST  (id, source_in, source_out, punch scale)
