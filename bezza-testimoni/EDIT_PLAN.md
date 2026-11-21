@@ -1,10 +1,10 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v9
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v11
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v9 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v9.mp4` (540×960, watermark)
+**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v11 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v11.mp4` (540×960, watermark)
 
-## Perubahan v11 (storyboard sahaja — belum dirender)
+## Perubahan v11 (preview: `renders/PREVIEW_bezza_testimoni_v11.mp4`)
 
 Video rujukan diambil sebagai **inspirasi struktur sahaja** (label kecil + tajuk besar tebal, caption huruf kecil). Palet sendiri, serasi dengan kereta merah maroon:
 - Tajuk **putih Inter Black**, satu kata kunci dalam **gradien coral** (#FF5A5F → #FF9A62) + garis bawah coral beranimasi.
