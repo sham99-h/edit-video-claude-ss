@@ -349,6 +349,8 @@ for gi, g in enumerate(groups):
     gs = max(0.0, fr(g[0]["s"] - 0.04))
     nxt = groups[gi + 1][0]["s"] - 0.04 if gi + 1 < len(groups) else TOTAL
     ge = fr(min(max(g[-1]["e"] + 0.25, gs + 0.5), nxt, TOTAL - 0.02))
+    if gs < T["tekan"] < ge:          # the CTA button takes the caption spot: clear out first
+        ge = fr(T["tekan"] - 0.05)
     text_len = sum(len(w["text"]) for w in g) + len(g) - 1
     fs = int(min(56, 820 / max(1, text_len * 0.52)))
     runs = []  # consecutive keywords share one pill

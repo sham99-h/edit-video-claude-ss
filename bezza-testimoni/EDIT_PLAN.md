@@ -1,8 +1,12 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v12
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v13
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v12 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v12.mp4` (540×960, watermark)
+**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v13 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v13.mp4` (540×960, watermark)
+
+## Perubahan v13
+
+- **Butang "tekan beg biru" tak lagi bertindih dengan caption.** Caption "jangan lupa" kini hilang (44.83s) sebelum butang naik (44.86s).
 
 ## Perubahan v12 (ikut feedback)
 
