@@ -1,8 +1,14 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v11
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v12
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v11 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v11.mp4` (540×960, watermark)
+**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v12 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v12.mp4` (540×960, watermark)
+
+## Perubahan v12 (ikut feedback)
+
+1. **End card:** "Terima kasih kerana berurusan dengan / **JO HASHIM** / Perodua".
+2. **Saiz tajuk dikecilkan ~25%** (cth. BELI KERETA KALI KE-2 132→100px, KALI KE-2 150→110px, PERODUA BEZZA 108→84px, BERMINAT? 130→100px).
+3. **"KERETA SAMPAI DALAM 1 MINGGU"** kini muncul serentak (label + tajuk) tepat pada perkataan "1 minggu", dan kekal 2s.
 
 ## Perubahan v11 (preview: `renders/PREVIEW_bezza_testimoni_v11.mp4`)
 

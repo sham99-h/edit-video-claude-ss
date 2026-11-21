@@ -16,7 +16,7 @@
     <div id="mi-scrim" class="scrim"></div>
     <div id="mi-wrap" class="stack">
       <div id="mi-lbl" class="lbl"><i></i>Kereta sampai dalam</div>
-      <div id="mi-ttl" class="ttl" style="font-size:160px;margin-top:18px;"><span class="hot">1</span> MINGGU</div>
+      <div id="mi-ttl" class="ttl" style="font-size:116px;margin-top:18px;"><span class="hot">1</span> MINGGU</div>
       <div id="mi-bar" class="bar"></div>
       
       
@@ -26,9 +26,9 @@
     const tl = gsap.timeline({ paused: true });
     tl.fromTo("#mi-scrim", {opacity:0}, {opacity:1, duration:0.3}, 0);
     tl.fromTo("#mi-lbl", {opacity:0, y:16}, {opacity:1, y:0, duration:0.3, ease:"power4.out"}, 0);
-    tl.fromTo("#mi-ttl", {opacity:0, filter:"blur(10px)", scale:1.06}, {opacity:1, filter:"blur(0px)", scale:1, duration:0.22, ease:"power4.out"}, 2.617);
+    tl.fromTo("#mi-ttl", {opacity:0, filter:"blur(10px)", scale:1.06}, {opacity:1, filter:"blur(0px)", scale:1, duration:0.22, ease:"power4.out"}, 0.08);
     tl.fromTo("#mi-bar", {scaleX:0}, {scaleX:1, duration:0.45, ease:"expo.out"}, 0.2);
-    tl.to(["#mi-wrap","#mi-scrim"], {opacity:0, filter:"blur(6px)", duration:0.2, ease:"power3.in"}, 3.03);
+    tl.to(["#mi-wrap","#mi-scrim"], {opacity:0, filter:"blur(6px)", duration:0.2, ease:"power3.in"}, 1.86);
     window.__timelines["minggu"] = tl;
   </script>
 </template>

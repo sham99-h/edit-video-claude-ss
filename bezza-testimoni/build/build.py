@@ -244,13 +244,13 @@ def card(cid, start, end, body, script, css=""):
 def rel(t, base):  # relative time inside a card
     return round(t - base, 3)
 
-def title_card(cid, start, end, label, title, size, accent="", sub="", hit=None, static=False):
+def title_card(cid, start, end, label, title, size, accent="", sub="", hit=None, static=False, plain_label=False):
     """reference style: small white label, big pastel-yellow heavy title, optional tilted accent"""
     p = cid[:2]
     body = f"""
     <div id="{p}-scrim" class="scrim"></div>
     <div id="{p}-wrap" class="stack">
-      {f'<div id="{p}-lbl" class="lbl"><i></i>{label}</div>' if label else ''}
+      {(f'<div id="{p}-lbl" class="sub" style="font-size:40px;font-weight:700;">{label}</div>' if plain_label else f'<div id="{p}-lbl" class="lbl"><i></i>{label}</div>') if label else ''}
       <div id="{p}-ttl" class="ttl" style="font-size:{size}px;margin-top:18px;">{title}</div>
       <div id="{p}-bar" class="bar"></div>
       {f'<div style="text-align:right;padding-right:170px;margin-top:2px;"><span id="{p}-acc" class="acc">{accent}</span></div>' if accent else ''}
@@ -270,29 +270,29 @@ def title_card(cid, start, end, label, title, size, accent="", sub="", hit=None,
 
 # --- HOOK (full title from frame 0) -------------------------------------------
 hs, he = 0.0, seg_end("hook")
-title_card("hook", hs, he, "Repeat customer", 'BELI KERETA<br><span class="hot">KALI KE-2</span>', 132, accent="dengan Jo", static=True)
+title_card("hook", hs, he, "Repeat customer", 'BELI KERETA<br><span class="hot">KALI KE-2</span>', 100, accent="dengan Jo", static=True)
 
 # --- NAME ------------------------------------------------------------------------
 ns, ne = T["a1"] + 0.45, T["b"]
-title_card("name", ns, ne, "Perodua", "JO HASHIM", 130)
+title_card("name", ns, ne, "Perodua", "JO HASHIM", 100)
 
 # --- DELIVERY ------------------------------------------------------------------
 ds, de = T["b"], seg_end("b") + 0.6
-title_card("delivery", ds, de, "Delivery hari ini", 'PERODUA <span class="hot">BEZZA</span>', 108, accent="ke Rawang")
+title_card("delivery", ds, de, "Delivery hari ini", 'PERODUA <span class="hot">BEZZA</span>', 84, accent="ke Rawang")
 
 # --- REPEAT CUSTOMER ---------------------------------------------------------------
 ks, ke = T["kali2"] - 0.1, seg_end("f2")
-title_card("repeat", ks, ke, "Repeat customer", 'KALI <span class="hot">KE-2</span>', 150)
+title_card("repeat", ks, ke, "Repeat customer", 'KALI <span class="hot">KE-2</span>', 110)
 
 # --- 1 MINGGU (body) ----------------------------------------------------------------
-ms, me = seg_start("h") + 0.05, seg_end("h")
-title_card("minggu", ms, me, "Kereta sampai dalam", '<span class="hot">1</span> MINGGU', 160, hit=T["minggu1"])
+ms, me = T["minggu1"] - 0.08, T["minggu1"] + 2.0
+title_card("minggu", ms, me, "Kereta sampai dalam", '<span class="hot">1</span> MINGGU', 116)
 
 # --- CTA ----------------------------------------------------------------------------
 os_, oe = seg_start("o") + 0.2, T["salam"] - 0.1
 card("cta", os_, oe, """
     <div id="ca-scrim" class="scrim"></div>
-    <div id="ca-q" class="ttl" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-size:130px;">BERMINAT<span class="hot">?</span></div>
+    <div id="ca-q" class="ttl" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-size:100px;">BERMINAT<span class="hot">?</span></div>
     <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:720px;top:1320px;padding:28px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:800;font-size:52px;letter-spacing:-.01em;box-shadow:0 12px 0 #0b4fa8,0 26px 50px rgba(0,0,0,.30);">tekan beg biru</div>
     <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:1475px;" width="110" height="110" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
 """, f"""
@@ -308,7 +308,7 @@ card("cta", os_, oe, """
 
 # --- END CARD -------------------------------------------------------------------------
 es, ee = T["salam"] - 0.1, TOTAL
-title_card("endcard", es, ee, "Terima kasih", "JO HASHIM", 140, sub="Perodua")
+title_card("endcard", es, ee, "Terima kasih kerana berurusan dengan", "JO HASHIM", 104, sub="Perodua", plain_label=True)
 
 # ---------------------------------------------------------------------------
 # 5. SOUND FX  (file, picture time, peak offset, volume)
