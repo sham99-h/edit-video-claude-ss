@@ -1,109 +1,116 @@
 {
- "total": 51.4,
+ "total": 51.1667,
  "segments": [
   {
    "id": "hook",
-   "src_in": 52.62,
-   "src_out": 55.14,
+   "src_in": 52.8,
+   "src_out": 55.16,
    "out_start": 0.0,
    "scale": 1.1
   },
   {
-   "id": "a",
+   "id": "a1",
    "src_in": 0.0,
-   "src_out": 5.28,
-   "out_start": 2.2,
+   "src_out": 3.8,
+   "out_start": 2.0667,
    "scale": 1.0
   },
   {
+   "id": "a2",
+   "src_in": 4.01,
+   "src_out": 5.28,
+   "out_start": 5.8667,
+   "scale": 1.1
+  },
+  {
    "id": "b",
-   "src_in": 5.84,
+   "src_in": 5.78,
    "src_out": 7.98,
-   "out_start": 7.4667,
-   "scale": 1.12
+   "out_start": 7.1333,
+   "scale": 1.0
   },
   {
    "id": "c",
    "src_in": 13.85,
    "src_out": 17.64,
-   "out_start": 9.6,
+   "out_start": 9.3333,
    "scale": 1.0
   },
   {
    "id": "d",
    "src_in": 18.15,
    "src_out": 19.32,
-   "out_start": 13.4,
+   "out_start": 13.1333,
    "scale": 1.1
   },
   {
    "id": "e",
    "src_in": 21.22,
    "src_out": 25.92,
-   "out_start": 14.5667,
+   "out_start": 14.3,
    "scale": 1.0
   },
   {
    "id": "f",
    "src_in": 26.56,
    "src_out": 29.19,
-   "out_start": 19.2667,
+   "out_start": 19.0,
    "scale": 1.12
   },
   {
    "id": "deal",
    "src_in": 30.86,
    "src_out": 35.8,
-   "out_start": 21.9,
+   "out_start": 21.6333,
    "scale": 1.0
   },
   {
    "id": "h",
    "src_in": 35.8,
    "src_out": 39.1,
-   "out_start": 26.8333,
+   "out_start": 26.5667,
    "scale": 1.12
   },
   {
    "id": "i",
    "src_in": 39.52,
    "src_out": 42.47,
-   "out_start": 30.1333,
+   "out_start": 29.8667,
    "scale": 1.0
   },
   {
    "id": "j",
    "src_in": 43.0,
    "src_out": 46.08,
-   "out_start": 33.0667,
+   "out_start": 32.8333,
    "scale": 1.12
   },
   {
    "id": "k",
    "src_in": 47.45,
    "src_out": 48.48,
-   "out_start": 36.1333,
+   "out_start": 35.9,
    "scale": 1.0
   },
   {
    "id": "l1",
    "src_in": 49.22,
    "src_out": 51.4,
-   "out_start": 37.1667,
+   "out_start": 36.9333,
    "scale": 1.12
   },
   {
    "id": "n1",
    "src_in": 55.64,
    "src_out": 60.22,
-   "out_start": 39.3333,
+   "out_start": 39.1,
    "scale": 1.0
   },
   {
    "id": "o",
    "src_in": 70.8,
    "src_out": 78.3,
-   "out_start": 43.9,
+   "out_start": 43.6667,
    "scale": 1.0
   }
  ],
@@ -111,128 +118,113 @@
   {
    "id": "hook",
    "start": 0.0,
-   "dur": 2.2
+   "dur": 2.0667
   },
   {
    "id": "name",
-   "start": 2.6667,
-   "dur": 4.8
+   "start": 2.5333,
+   "dur": 4.6
   },
   {
    "id": "delivery",
-   "start": 7.4667,
-   "dur": 2.7333
+   "start": 7.1333,
+   "dur": 2.8
   },
   {
    "id": "repeat",
-   "start": 15.3333,
+   "start": 15.0667,
    "dur": 6.5667
   },
   {
-   "id": "bank3",
-   "start": 22.0,
-   "dur": 4.8333
-  },
-  {
    "id": "minggu",
-   "start": 26.8667,
-   "dur": 3.2667
+   "start": 26.6333,
+   "dur": 3.2333
   },
   {
    "id": "pesanan",
-   "start": 36.1667,
+   "start": 35.9333,
    "dur": 2.2667
   },
   {
    "id": "cta",
-   "start": 44.1,
+   "start": 43.8667,
    "dur": 4.1667
   },
   {
    "id": "endcard",
-   "start": 48.2667,
+   "start": 48.0333,
    "dur": 3.1333
   }
  ],
  "sfx": [
   {
    "name": "pop",
-   "at": 0.55,
+   "at": 0.38,
    "vol": 0.9
   },
   {
    "name": "whoosh",
-   "at": 2.2,
+   "at": 2.07,
    "vol": 0.7
   },
   {
    "name": "whoosh-short",
-   "at": 2.8,
+   "at": 2.67,
    "vol": 0.5
   },
   {
    "name": "pop",
-   "at": 7.67,
+   "at": 7.33,
    "vol": 0.8
   },
   {
    "name": "pop",
-   "at": 15.63,
+   "at": 15.37,
    "vol": 0.8
   },
   {
-   "name": "click",
-   "at": 22.1,
-   "vol": 0.9
-  },
-  {
    "name": "impact-bass-1",
-   "at": 23.5,
-   "vol": 0.22
-  },
-  {
-   "name": "impact-bass-1",
-   "at": 29.6,
+   "at": 29.33,
    "vol": 0.2
   },
   {
    "name": "pop",
-   "at": 36.38,
+   "at": 36.15,
    "vol": 0.7
   },
   {
    "name": "whoosh",
-   "at": 43.9,
+   "at": 43.67,
    "vol": 0.6
   },
   {
    "name": "pop",
-   "at": 45.23,
+   "at": 45.0,
    "vol": 0.8
   },
   {
    "name": "click",
-   "at": 47.41,
+   "at": 47.18,
    "vol": 1.2
   },
   {
    "name": "whoosh-short",
-   "at": 48.42,
+   "at": 48.18,
    "vol": 0.45
   }
  ],
  "captions": [
   "Saya dah ambil",
   "2 kali kereta",
-  "dengan Bang Jo.",
+  "dengan Jo.",
   "Assalamualaikum,",
   "saya Jo Hashim",
   "daripada Perodua PJ.",
   "Hari ni kita",
-  "nak deliver satu",
-  "biji kereta",
-  "Bezza customer daripada",
-  "Rawang.",
+  "nak deliver",
+  "satu biji kereta",
+  "Bezza X customer",
+  "daripada Rawang.",
   "Bang,",
   "boleh tak bagi",
   "feedback macam mana",
@@ -242,7 +234,7 @@
   "First,",
   "ni kali kedua.",
   "Sebelum ni saya",
-  "deal dengan abang",
+  "deal dengan",
   "Jo untuk",
   "ambil kereta saya",
   "yang belakang tu.",
@@ -259,7 +251,7 @@
   "lah",
   "Sebab sebelum ni",
   "saya pernah deal",
-  "dengan sales lain",
+  "dengan SA lain",
   "Lebih 2 minggu",
   "Ini tak sampai",
   "2 minggu dah",
@@ -271,7 +263,7 @@
   "dapat loan cepat",
   "nak cepat kereta",
   "proses",
-  "ambil dengan Bang Jo.",
+  "ambil dengan Jo.",
   "korang yang betul-betul",
   "berminat",
   "jangan lupa",

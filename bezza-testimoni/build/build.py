@@ -23,9 +23,11 @@ SRC_DUR = 80.80
 #    Everything not listed is cut. Reasons are in EDIT_PLAN.md.
 # ---------------------------------------------------------------------------
 SEGMENTS = [
-    ("hook", 52.62, 55.14, 1.10),  # HOOK: "Saya dah ambil 2 kali kereta dengan Bang Jo" (repeat customer)
-    ("a",    0.00,  5.28, 1.00),   # Jo intro
-    ("b",    5.84,  7.98, 1.12),   # "...Bezza customer daripada Rawang" (pause 5.28-5.84 cut)
+    ("hook", 52.80, 55.16, 1.10),  # HOOK (starts after a "sebab"-sounding tail): "Saya dah ambil 2 kali kereta dengan Bang Jo" (repeat customer)
+    ("a1",   0.00,  3.80, 1.00),   # Jo intro "...kita nak deliver"
+    #  3.80-4.01 CUT: "err"
+    ("a2",   4.01,  5.28, 1.10),   # "satu biji kereta"
+    ("b",    5.78,  7.98, 1.00),   # "Bezza X customer daripada Rawang" (pause 5.28-5.78 cut)
     #  7.98-13.85 CUT: "Kita nak tengok feedback..." (repeat of the question below)
     ("c",   13.85, 17.64, 1.00),   # question
     ("d",   18.15, 19.32, 1.10),   # "...kali kedua?" (pause cut)
@@ -57,7 +59,8 @@ CORRECTIONS = {
     1.70: ["Perodua", "PJ."],      # whisper: "Pro2PJ"  (VERIFY)
     0.70: ["Jo"],                  # spelling: Jo
     23.80: ["Jo"],
-    5.22: ["Bezza"],               # "BezaX"
+    23.54: [],                     # "abang" (caption: just "Jo")
+    5.22: ["Bezza", "X"],          # "BezaX" = Bezza X variant
     23.18: ["deal"],               # "di"
     24.30: [],                     # "kita"
     24.60: ["ambil"],              # "atibah"
@@ -66,11 +69,11 @@ CORRECTIONS = {
     27.64: [],                     # "dengan"
     28.18: [],                     # "Atok"
     28.80: ["Bezza"],              # "Beza"
-    41.82: ["sales"],              # "SEL"
+    41.82: ["SA"],                 # "SEL" -> "SA lain"
     51.86: ["bukan"],              # "saya" -> "Ini bukan iklan" (VERIFY)
     53.64: ["kali"],               # "cari"
-    54.58: ["Bang", "Jo."],       # "Banjo"
-    59.78: ["Bang", "Jo."],       # "banjur"
+    54.58: ["Jo."],       # "Banjo"
+    59.78: ["Jo."],       # "banjur"
     64.34: ["repeat"],             # (cut anyway)
     63.20: [],                     # "sebab" (cut region)
     74.14: ["beg", "biru"],        # "backbiro" -> "beg biru" (confirmed by Jo's team)
@@ -81,7 +84,7 @@ CORRECTIONS = {
     70.46: [],                     # "so" (filler)
 }
 HIGHLIGHT = {"3", "hari", "bank", "cepat", "1", "minggu", "2", "kedua", "loan",
-             "bang", "jo", "bezza", "rawang", "dibayar", "beg", "biru",
+             "jo", "bezza", "rawang", "dibayar", "beg", "biru",
              "bukan", "iklan", "kali", "hashim", "serius"}
 
 # ---------------------------------------------------------------------------
@@ -169,7 +172,7 @@ if cur: groups.append(cur)
 T = {
     "three":   out(32.36),   # "3 hari"
     "bank":    out(35.32),   # "bank"
-    "a":       seg_start("a"),
+    "a1":      seg_start("a1"),
     "b":       seg_start("b"),
     "kali2":   out(22.08),
     "minggu1": out(38.48),
@@ -234,12 +237,12 @@ card("hook", hs, he, f"""
 """)
 
 # --- NAME (Joe) --------------------------------------------------------------
-ns, ne = T["a"] + 0.45, T["b"]
+ns, ne = T["a1"] + 0.45, T["b"]
 card("name", ns, ne, """
     <div id="nm-card" class="box" style="left:130px;top:330px;padding:30px 44px 30px 60px;overflow:hidden;">
       <div id="nm-bar" style="position:absolute;left:0;top:0;bottom:0;width:18px;background:#D7192A;"></div>
       <div id="nm-name" style="font-weight:900;font-size:76px;letter-spacing:-.01em;line-height:1;">JO HASHIM</div>
-      <div id="nm-role" style="margin-top:12px;font-weight:600;font-size:34px;color:#ddd;">Perodua &middot; DMM Sales (PJ)</div>
+      <div id="nm-role" style="margin-top:12px;font-weight:600;font-size:34px;color:#ddd;">Perodua</div>
     </div>
 """, f"""
     tl.fromTo("#nm-card", {{clipPath:"inset(0 100% 0 0)"}}, {{clipPath:"inset(0 0% 0 0)", duration:0.5, ease:"expo.out"}}, 0);
@@ -277,19 +280,6 @@ card("repeat", ks, ke, """
     tl.fromTo("#rp-chip", {{opacity:0, y:-20}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0);
     tl.fromTo("#rp-big", {{opacity:0, scale:1.8}}, {{opacity:1, scale:1, duration:0.3, ease:"expo.out"}}, 0.1);
     tl.to("#rp-wrap", {{opacity:0, scale:0.9, duration:0.2, ease:"power3.in"}}, {rel(ke - 0.22, ks)});
-""")
-
-# --- DEAL BANK 3 HARI (customer's own experience + disclaimer) ---------------
-bs3, be3 = seg_start("deal") + 0.1, seg_end("deal")
-card("bank3", bs3, be3, f"""
-    <div id="b3-line" class="box" style="left:150px;right:150px;top:340px;padding:20px 0;text-align:center;font-weight:900;font-size:50px;">DEAL BANK DALAM</div>
-    <div id="b3-big" style="position:absolute;left:0;right:0;top:440px;text-align:center;font-weight:900;font-size:180px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">3 HARI</div>
-    <div id="b3-note" style="position:absolute;left:150px;right:150px;top:650px;text-align:center;font-weight:600;font-size:28px;line-height:1.3;color:#fff;background:rgba(17,17,17,.72);border-radius:14px;padding:10px 16px;">*Pengalaman customer ini. Tempoh kelulusan bergantung pada bank.</div>
-""", f"""
-    tl.fromTo("#b3-line", {{opacity:0, y:20}}, {{opacity:1, y:0, duration:0.35, ease:"power4.out"}}, 0);
-    tl.fromTo("#b3-big", {{opacity:0, scale:2.4}}, {{opacity:1, scale:1, duration:0.28, ease:"expo.out"}}, {rel(T['three'], bs3)});
-    tl.fromTo("#b3-note", {{opacity:0}}, {{opacity:1, duration:0.3}}, {rel(T['three'] + 0.3, bs3)});
-    tl.to(["#b3-line","#b3-big","#b3-note"], {{opacity:0, y:-30, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(be3 - 0.22, bs3)});
 """)
 
 # --- 1 MINGGU (body) --------------------------------------------------------
@@ -336,7 +326,7 @@ card("endcard", es, ee, """
     <div id="ec-scrim" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,12,.82) 0%,rgba(10,10,12,.55) 45%,rgba(10,10,12,0) 70%);"></div>
     <div id="ec-ty" style="position:absolute;left:0;right:0;top:360px;text-align:center;font-weight:900;font-size:100px;color:#fff;line-height:1;">TERIMA KASIH!</div>
     <div id="ec-name" style="position:absolute;left:0;right:0;top:510px;text-align:center;font-weight:900;font-size:64px;color:#FFD400;">JO HASHIM</div>
-    <div id="ec-role" style="position:absolute;left:0;right:0;top:590px;text-align:center;font-weight:600;font-size:36px;color:#eee;">Perodua &middot; DMM Sales (PJ)</div>
+    <div id="ec-role" style="position:absolute;left:0;right:0;top:590px;text-align:center;font-weight:600;font-size:36px;color:#eee;">Perodua</div>
 """, f"""
     tl.fromTo("#ec-scrim", {{opacity:0}}, {{opacity:1, duration:0.4, ease:"power2.out"}}, 0);
     tl.fromTo("#ec-ty", {{opacity:0, filter:"blur(8px)"}}, {{opacity:1, filter:"blur(0px)", duration:0.2, ease:"power4.out"}}, 0.1);
@@ -352,7 +342,7 @@ PEAK = {"whoosh": 0.162, "whoosh-short": 0.162, "pop": 0.12, "impact-bass-1": 0.
         "click": 0.073, "sparkle": 0.027}
 DUR = {"whoosh": 0.57, "whoosh-short": 0.57, "pop": 0.72, "impact-bass-1": 2.1,
        "click": 0.36, "sparkle": 1.8}
-CUT_HOOK = seg_start("a")
+CUT_HOOK = seg_start("a1")
 CUT_CTA = seg_start("o")
 SFX = [
     ("pop",           T["duakali"] + 0.05, 0.9), # hook "KALI KE-2" pulse
@@ -360,8 +350,6 @@ SFX = [
     ("whoosh-short",  ns + 0.15,        0.5),    # name card wipe
     ("pop",           ds + 0.2,         0.8),    # delivery card
     ("pop",           ks + 0.3,         0.8),    # KALI KE-2
-    ("click",         bs3 + 0.1,        0.9),    # deal bank card
-    ("impact-bass-1", T["three"] + 0.1, 0.22),   # 3 HARI slam
     ("impact-bass-1", T["minggu1"] + 0.1, 0.2),  # 1 MINGGU slam
     ("pop",           qs + 0.2,         0.7),    # pesanan chip
     ("whoosh",        CUT_CTA,          0.6),    # jump to CTA flash
@@ -451,7 +439,7 @@ cam_js.append('tl.set("#flash",{opacity:0},0);')
 for c in (CUT_HOOK, CUT_CTA):
     cam_js.append(f'tl.fromTo("#flash",{{opacity:0}},{{opacity:0.9,duration:0.06,ease:"power2.in"}},{fr(c - 0.06)});')
     cam_js.append(f'tl.to("#flash",{{opacity:0,duration:0.22,ease:"power2.out"}},{c});')
-for t, amp in ((T["three"] + 0.1, 10), (T["minggu1"] + 0.1, 10)):
+for t, amp in ((T["minggu1"] + 0.1, 10),):
     cam_js.append(f'tl.to("#cam",{{keyframes:[{{x:{amp},y:-{amp//2},duration:0.04}},{{x:-{amp},y:{amp//2},duration:0.05}},'
                   f'{{x:{amp//2},y:0,duration:0.05}},{{x:0,y:0,duration:0.06}}]}},{t:.3f});')
 # slow push inside the long CTA segment keeps the frame alive

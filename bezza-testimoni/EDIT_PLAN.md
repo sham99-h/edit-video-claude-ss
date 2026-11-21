@@ -1,10 +1,19 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v4
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v5
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 51.4s, 1080×1920, 30fps — **status: PREVIEW DRAF v4 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v4.mp4` (540×960, watermark)
+**Hasil edit:** 51.2s, 1080×1920, 30fps — **status: PREVIEW DRAF v5 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v5.mp4` (540×960, watermark)
 
-## Perubahan v4 (ikut feedback)
+## Perubahan v5 (ikut feedback)
+
+1. **"DMM Sales (PJ)" dibuang** dari name card & end card (kini "Perodua" sahaja). Reben fizikal atas kereta masih tertulis DMM Sales — itu dalam footage.
+2. **Caption "sales lain" → "SA lain".**
+3. **Grafik "DEAL BANK DALAM 3 HARI" dibuang** (beserta SFX & shake).
+4. **"Bang Jo" / "abang Jo" → "Jo"** dalam caption (audio masih sebut "Bang Jo").
+5. **"Err" sebelum "satu biji kereta" dibuang** (src 3.80–4.01: "deliver *err* satu biji kereta"). Perkataan "Bezza X" kekal — "X" ialah varian kereta; caption kini "Bezza X".
+6. **Intro: bunyi "sebab" di awal dibuang** — klip intro kini mula 0.18s lewat (src 52.80), selepas hujung perkataan sebelumnya. Disahkan dengan transkrip semula render.
+
+## Perubahan v4
 
 1. **"Erk erk" di intro dibuang.** Ia datang dari klip "Memang cepat" (src 29.8–30.9, ada dua bunyi pendek) — klip itu dibuang terus.
 2. **Plat VSA 2173 di-blur** (pixelate + blur) pada setiap frame. Plat dijejak dengan OpenCV CSRT dan blur dibakar terus ke dalam footage (`build/plate/`).
