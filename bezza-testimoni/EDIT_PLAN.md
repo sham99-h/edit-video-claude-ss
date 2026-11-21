@@ -1,10 +1,18 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v3
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v4
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 52.0s, 1080×1920, 30fps — **status: PREVIEW DRAF v3 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v3.mp4` (540×960, watermark)
+**Hasil edit:** 51.4s, 1080×1920, 30fps — **status: PREVIEW DRAF v4 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v4.mp4` (540×960, watermark)
 
-## Perubahan v3 (ikut feedback)
+## Perubahan v4 (ikut feedback)
+
+1. **"Erk erk" di intro dibuang.** Ia datang dari klip "Memang cepat" (src 29.8–30.9, ada dua bunyi pendek) — klip itu dibuang terus.
+2. **Plat VSA 2173 di-blur** (pixelate + blur) pada setiap frame. Plat dijejak dengan OpenCV CSRT dan blur dibakar terus ke dalam footage (`build/plate/`).
+3. **Hook baru = repeat customer:** *"Saya dah ambil 2 kali kereta dengan Bang Jo"* (1.15×), tajuk penuh dari frame pertama "REPEAT CUSTOMER / **BELI KERETA KALI KE-2**". Bahagian "kereta sampai 1 minggu" dipulangkan ke tempat asal (lepas "deal dengan bank") dengan kad "KERETA SAMPAI DALAM 1 MINGGU".
+4. **Caption "Okay guys" dibuang** (audio kekal).
+5. **Caption "nak cepat kita proses" → "nak cepat kereta proses".**
+
+## Perubahan v3
 
 1. **Hook dipercepatkan 1.2×** (suara customer, pitch kekal) — hook kini 3.6s (dulu 4.3s).
 2. **Caption lebih kecil** (maks 64px, dulu 84px) dan **diturunkan ke paras peha** (y≈1340).

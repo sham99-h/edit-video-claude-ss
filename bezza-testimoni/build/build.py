@@ -15,15 +15,15 @@ W, H = 1080, 1920
 SRC = "assets/footage.mp4"
 SRC_DUR = 80.80
 # footage.mp4 = Drive original, HLG->SDR tonemap, loudnorm -15 LUFS, then
-# Jo's "pesanan" line (src 47.40-50.80) boosted +7 dB with a -1.5 dBFS limiter.
+# Jo's "pesanan" line (src 47.40-50.80) boosted +7 dB with a -1.5 dBFS limiter,
+# then plate VSA 2173 pixelated on every frame (OpenCV CSRT track, see build/plate/).
 
 # ---------------------------------------------------------------------------
 # 1. CUT LIST  (id, source_in, source_out, punch scale)
 #    Everything not listed is cut. Reasons are in EDIT_PLAN.md.
 # ---------------------------------------------------------------------------
 SEGMENTS = [
-    ("hook1", 29.84, 30.84, 1.14), # HOOK: "Memang cepat."
-    ("hook2", 35.80, 39.10, 1.00), # HOOK: "Dan kereta pun dapat dalam 1 minggu lebih."
+    ("hook", 52.62, 55.14, 1.10),  # HOOK: "Saya dah ambil 2 kali kereta dengan Bang Jo" (repeat customer)
     ("a",    0.00,  5.28, 1.00),   # Jo intro
     ("b",    5.84,  7.98, 1.12),   # "...Bezza customer daripada Rawang" (pause 5.28-5.84 cut)
     #  7.98-13.85 CUT: "Kita nak tengok feedback..." (repeat of the question below)
@@ -32,18 +32,19 @@ SEGMENTS = [
     #  19.32-21.22 CUT: "Boleh?" + awkward pause
     ("e",   21.22, 25.92, 1.00),   # repeat customer context
     ("f",   26.56, 29.19, 1.12),   # "Ni saya ambil Bezza lah"
-    #  29.84-30.84 + 35.80-39.10 used as HOOK (not repeated)
+    #  29.19-30.86 CUT: "erk erk" + "memang cepat"
     ("deal", 30.86, 35.80, 1.00),  # "Saya buat 3 hari sahaja, dah dapat deal dengan bank"
-    ("i",   39.52, 42.47, 1.12),   # "Agak sangat cepat... sales lain"
-    ("j",   43.00, 46.08, 1.00),   # "lebih 2 minggu. Ini tak sampai 2 minggu"
+    ("h",   35.80, 39.10, 1.12),   # "Dan kereta pun dapat dalam 1 minggu lebih"
+    ("i",   39.52, 42.47, 1.00),   # "Agak sangat cepat... sales lain"
+    ("j",   43.00, 46.08, 1.12),   # "lebih 2 minggu. Ini tak sampai 2 minggu"
     #  46.08-47.45 CUT: "Sepertulah" filler + pause
-    ("k",   47.45, 48.48, 1.12),   # "So apa pesanan..."
+    ("k",   47.45, 48.48, 1.00),   # "apa pesanan..." (Jo, boosted in footage)
     ("l1",  49.22, 51.40, 1.12),   # "...untuk customer kat luar? Okay guys"
-    #  51.40-52.62 CUT (TikTok): "Ini bukan iklan" - misleading for commercial content
-    ("l2",  52.62, 55.14, 1.00),   # "Saya dah ambil 2 kali kereta dengan Bang Jo"
-    ("n1",  55.64, 60.22, 1.12),   # "Kalau korang nak loan cepat..."
-    #  60.22-63.30 CUT (TikTok): "Serius, saya tak dibayar" - undisclosed-promotion risk
-    #  63.30-70.80 CUT: repeat ("dah dua kali, kali kedua, memang cepat") + "ok itu je" + 1.7s pause
+    #  51.40-52.62 CUT (TikTok): "Ini bukan iklan"
+    #  52.62-55.14 used as HOOK
+    ("n1",  55.64, 60.22, 1.00),   # "Kalau korang nak loan cepat..."
+    #  60.22-63.30 CUT (TikTok): "Serius, saya tak dibayar"
+    #  63.30-70.80 CUT: repeat + "ok itu je" + 1.7s pause
     ("o",   70.80, 78.30, 1.00),   # CTA + "Assalamualaikum" + thumbs-up pose under end card
     #  78.30-80.80 CUT: camera drops to the floor
 ]
@@ -74,6 +75,9 @@ CORRECTIONS = {
     63.20: [],                     # "sebab" (cut region)
     74.14: ["beg", "biru"],        # "backbiro" -> "beg biru" (confirmed by Jo's team)
     47.20: [],                     # "So" (filler)
+    50.82: [],                     # "Okay" caption removed
+    51.02: [],                     # "guys" (would stand alone)
+    58.70: ["kereta"],             # caption: "nak cepat kereta proses"
     70.46: [],                     # "so" (filler)
 }
 HIGHLIGHT = {"3", "hari", "bank", "cepat", "1", "minggu", "2", "kedua", "loan",
@@ -88,7 +92,7 @@ def fr(t):
     return round(round(t * FPS) / FPS, 4)
 
 # playback speed per segment (pitch-preserved); hook spoken faster
-RATE = {"hook1": 1.2, "hook2": 1.2}
+RATE = {"hook": 1.15}
 
 timeline = []  # (id, src_in, src_out, out_start, scale)
 _t = 0.0
@@ -217,15 +221,15 @@ def rel(t, base):  # relative time inside a card
     return round(t - base, 3)
 
 # --- HOOK ------------------------------------------------------------------
-hs, he = 0.0, seg_end("hook2")
+hs, he = 0.0, seg_end("hook")
 card("hook", hs, he, f"""
     <div id="hk-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
-      <div id="hk-line" style="display:inline-block;background:#111;color:#fff;border-radius:24px;padding:18px 40px;font-weight:900;font-size:56px;">KERETA SAMPAI DALAM</div>
-      <div id="hk-big" style="margin-top:14px;font-weight:900;font-size:160px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
+      <div id="hk-line" style="display:inline-block;background:#D7192A;color:#fff;border-radius:999px;padding:16px 40px;font-weight:900;font-size:46px;letter-spacing:.04em;">REPEAT CUSTOMER</div>
+      <div id="hk-big" style="margin-top:16px;font-weight:900;font-size:120px;line-height:1.02;color:#FFD400;-webkit-text-stroke:11px #111;paint-order:stroke fill;text-shadow:0 12px 0 #111;">BELI KERETA<br>KALI KE-2</div>
     </div>
 """, f"""
     tl.fromTo("#hk-wrap", {{opacity:1, scale:1}}, {{opacity:1, scale:1, duration:0.01}}, 0);
-    tl.to("#hk-big", {{keyframes:[{{scale:1.12, duration:0.1, ease:"power2.out"}}, {{scale:1, duration:0.22, ease:"power2.inOut"}}]}}, {rel(T['minggu1'], hs)});
+    tl.to("#hk-big", {{keyframes:[{{scale:1.1, duration:0.1, ease:"power2.out"}}, {{scale:1, duration:0.22, ease:"power2.inOut"}}]}}, {rel(T['duakali'], hs)});
     tl.to("#hk-wrap", {{opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in"}}, {rel(he - 0.25, hs)});
 """)
 
@@ -288,6 +292,19 @@ card("bank3", bs3, be3, f"""
     tl.to(["#b3-line","#b3-big","#b3-note"], {{opacity:0, y:-30, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(be3 - 0.22, bs3)});
 """)
 
+# --- 1 MINGGU (body) --------------------------------------------------------
+ms, me = seg_start("h") + 0.05, seg_end("h")
+card("minggu", ms, me, f"""
+    <div id="mg-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
+      <div id="mg-line" style="display:inline-block;background:#111;color:#fff;border-radius:24px;padding:18px 40px;font-weight:900;font-size:52px;">KERETA SAMPAI DALAM</div>
+      <div id="mg-big" style="margin-top:14px;font-weight:900;font-size:150px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
+    </div>
+""", f"""
+    tl.fromTo("#mg-line", {{opacity:0, y:20}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0);
+    tl.fromTo("#mg-big", {{opacity:0, scale:2.2}}, {{opacity:1, scale:1, duration:0.28, ease:"expo.out"}}, {rel(T['minggu1'], ms)});
+    tl.to("#mg-wrap", {{opacity:0, y:-30, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(me - 0.22, ms)});
+""")
+
 # --- QUESTION chip ------------------------------------------------------------
 qs, qe = seg_start("k") + 0.05, seg_end("l1") - 0.9
 card("pesanan", qs, qe, """
@@ -295,18 +312,6 @@ card("pesanan", qs, qe, """
 """, f"""
     tl.fromTo("#ps-chip", {{opacity:0, scale:0.7}}, {{opacity:1, scale:1, duration:0.35, ease:"back.out(1.8)"}}, 0);
     tl.to("#ps-chip", {{opacity:0, y:-20, duration:0.18, ease:"power3.in"}}, {rel(qe - 0.2, qs)});
-""")
-
-# --- 2X BELI ----------------------------------------------------------------
-bs, be = T["duakali"] - 0.15, seg_end("l2")
-card("duakali", bs, be, """
-    <div id="dk-card" class="box" style="left:0;right:0;margin:auto;width:760px;top:360px;padding:26px 30px;text-align:center;">
-      <div style="font-weight:900;font-size:64px;line-height:1.05;"><span class="yel">2X</span> BELI KERETA</div>
-      <div style="font-weight:700;font-size:38px;color:#ddd;margin-top:6px;">dengan Bang Jo</div>
-    </div>
-""", f"""
-    tl.fromTo("#dk-card", {{opacity:0, y:40}}, {{opacity:1, y:0, duration:0.4, ease:"expo.out"}}, 0);
-    tl.to("#dk-card", {{opacity:0, filter:"blur(8px)", duration:0.2, ease:"power3.in"}}, {rel(be - 0.22, bs)});
 """)
 
 # --- CTA ----------------------------------------------------------------------------
@@ -350,15 +355,15 @@ DUR = {"whoosh": 0.57, "whoosh-short": 0.57, "pop": 0.72, "impact-bass-1": 2.1,
 CUT_HOOK = seg_start("a")
 CUT_CTA = seg_start("o")
 SFX = [
-    ("impact-bass-1", T["minggu1"] + 0.1, 0.32), # hook "1 MINGGU" slam
+    ("pop",           T["duakali"] + 0.05, 0.9), # hook "KALI KE-2" pulse
     ("whoosh",        CUT_HOOK,         0.7),    # hook -> intro flash
     ("whoosh-short",  ns + 0.15,        0.5),    # name card wipe
     ("pop",           ds + 0.2,         0.8),    # delivery card
     ("pop",           ks + 0.3,         0.8),    # KALI KE-2
     ("click",         bs3 + 0.1,        0.9),    # deal bank card
     ("impact-bass-1", T["three"] + 0.1, 0.22),   # 3 HARI slam
+    ("impact-bass-1", T["minggu1"] + 0.1, 0.2),  # 1 MINGGU slam
     ("pop",           qs + 0.2,         0.7),    # pesanan chip
-    ("whoosh-short",  bs + 0.15,        0.45),   # 2X card
     ("whoosh",        CUT_CTA,          0.6),    # jump to CTA flash
     ("pop",           T["berminat"] - 0.1, 0.8),
     ("click",         T["biru"] + 0.18, 1.2),    # button press
@@ -446,7 +451,7 @@ cam_js.append('tl.set("#flash",{opacity:0},0);')
 for c in (CUT_HOOK, CUT_CTA):
     cam_js.append(f'tl.fromTo("#flash",{{opacity:0}},{{opacity:0.9,duration:0.06,ease:"power2.in"}},{fr(c - 0.06)});')
     cam_js.append(f'tl.to("#flash",{{opacity:0,duration:0.22,ease:"power2.out"}},{c});')
-for t, amp in ((T["minggu1"] + 0.1, 16), (T["three"] + 0.1, 10)):
+for t, amp in ((T["three"] + 0.1, 10), (T["minggu1"] + 0.1, 10)):
     cam_js.append(f'tl.to("#cam",{{keyframes:[{{x:{amp},y:-{amp//2},duration:0.04}},{{x:-{amp},y:{amp//2},duration:0.05}},'
                   f'{{x:{amp//2},y:0,duration:0.05}},{{x:0,y:0,duration:0.06}}]}},{t:.3f});')
 # slow push inside the long CTA segment keeps the frame alive
