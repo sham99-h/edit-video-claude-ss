@@ -1,19 +1,23 @@
 <template>
   <style>
 #root{position:absolute;inset:0;font-family:'Inter',sans-serif;}
-.scrim{position:absolute;left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,rgba(20,16,12,.55) 0%,rgba(20,16,12,.38) 45%,rgba(20,16,12,0) 100%);}
+.scrim{position:absolute;left:0;right:0;top:0;height:920px;background:linear-gradient(180deg,rgba(18,12,14,.62) 0%,rgba(18,12,14,.42) 48%,rgba(18,12,14,0) 100%);}
 .stack{position:absolute;left:0;right:0;top:300px;text-align:center;}
-.lbl{font-weight:700;font-size:44px;letter-spacing:.01em;color:#fff;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.35);}
-.ttl{font-weight:900;letter-spacing:-.05em;line-height:.95;color:#F7E36B;text-shadow:0 4px 16px rgba(0,0,0,.30);}
-.acc{display:inline-block;font-weight:700;font-size:44px;color:#F7E36B;transform:rotate(-6deg);text-shadow:0 2px 10px rgba(0,0,0,.35);}
-.sub{font-weight:600;font-size:38px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.lbl{display:inline-flex;align-items:center;gap:14px;padding:12px 26px;border-radius:999px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.28);font-weight:700;font-size:32px;letter-spacing:.12em;color:#fff;text-transform:uppercase;}
+.lbl i{display:inline-block;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FF5A5F,#FF9A62);}
+.ttl{font-weight:900;letter-spacing:-.045em;line-height:.96;color:#FFFFFF;text-shadow:0 6px 24px rgba(0,0,0,.35);}
+.hot{background:linear-gradient(100deg,#FF5A5F 10%,#FF9A62 90%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 6px 18px rgba(0,0,0,.30));}
+.acc{display:inline-block;font-weight:700;font-style:italic;font-size:42px;color:#FFD9CF;transform:rotate(-5deg);text-shadow:0 2px 12px rgba(0,0,0,.4);}
+.sub{font-weight:600;font-size:36px;color:rgba(255,255,255,.9);letter-spacing:.02em;text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.bar{height:8px;width:180px;margin:18px auto 0;border-radius:8px;background:linear-gradient(90deg,#FF5A5F,#FF9A62);transform-origin:left center;}
 </style>
   <div id="root" data-composition-id="repeat" data-width="1080" data-height="1920" data-layout-allow-overlap>
 
     <div id="re-scrim" class="scrim"></div>
     <div id="re-wrap" class="stack">
-      <div id="re-lbl" class="lbl">Repeat customer</div>
-      <div id="re-ttl" class="ttl" style="font-size:150px;margin-top:6px;">KALI KE-2</div>
+      <div id="re-lbl" class="lbl"><i></i>Repeat customer</div>
+      <div id="re-ttl" class="ttl" style="font-size:150px;margin-top:18px;">KALI <span class="hot">KE-2</span></div>
+      <div id="re-bar" class="bar"></div>
       
       
     </div>
@@ -23,6 +27,7 @@
     tl.fromTo("#re-scrim", {opacity:0}, {opacity:1, duration:0.3}, 0);
     tl.fromTo("#re-lbl", {opacity:0, y:16}, {opacity:1, y:0, duration:0.3, ease:"power4.out"}, 0);
     tl.fromTo("#re-ttl", {opacity:0, filter:"blur(10px)", scale:1.06}, {opacity:1, filter:"blur(0px)", scale:1, duration:0.22, ease:"power4.out"}, 0.08);
+    tl.fromTo("#re-bar", {scaleX:0}, {scaleX:1, duration:0.45, ease:"expo.out"}, 0.2);
     tl.to(["#re-wrap","#re-scrim"], {opacity:0, filter:"blur(6px)", duration:0.2, ease:"power3.in"}, 5.247);
     window.__timelines["repeat"] = tl;
   </script>

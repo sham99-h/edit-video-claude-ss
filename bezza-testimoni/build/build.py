@@ -210,12 +210,15 @@ T = {
 
 CARD_CSS = """
 #root{position:absolute;inset:0;font-family:'Inter',sans-serif;}
-.scrim{position:absolute;left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,rgba(20,16,12,.55) 0%,rgba(20,16,12,.38) 45%,rgba(20,16,12,0) 100%);}
+.scrim{position:absolute;left:0;right:0;top:0;height:920px;background:linear-gradient(180deg,rgba(18,12,14,.62) 0%,rgba(18,12,14,.42) 48%,rgba(18,12,14,0) 100%);}
 .stack{position:absolute;left:0;right:0;top:300px;text-align:center;}
-.lbl{font-weight:700;font-size:44px;letter-spacing:.01em;color:#fff;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.35);}
-.ttl{font-weight:900;letter-spacing:-.05em;line-height:.95;color:#F7E36B;text-shadow:0 4px 16px rgba(0,0,0,.30);}
-.acc{display:inline-block;font-weight:700;font-size:44px;color:#F7E36B;transform:rotate(-6deg);text-shadow:0 2px 10px rgba(0,0,0,.35);}
-.sub{font-weight:600;font-size:38px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.lbl{display:inline-flex;align-items:center;gap:14px;padding:12px 26px;border-radius:999px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.28);font-weight:700;font-size:32px;letter-spacing:.12em;color:#fff;text-transform:uppercase;}
+.lbl i{display:inline-block;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FF5A5F,#FF9A62);}
+.ttl{font-weight:900;letter-spacing:-.045em;line-height:.96;color:#FFFFFF;text-shadow:0 6px 24px rgba(0,0,0,.35);}
+.hot{background:linear-gradient(100deg,#FF5A5F 10%,#FF9A62 90%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 6px 18px rgba(0,0,0,.30));}
+.acc{display:inline-block;font-weight:700;font-style:italic;font-size:42px;color:#FFD9CF;transform:rotate(-5deg);text-shadow:0 2px 12px rgba(0,0,0,.4);}
+.sub{font-weight:600;font-size:36px;color:rgba(255,255,255,.9);letter-spacing:.02em;text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.bar{height:8px;width:180px;margin:18px auto 0;border-radius:8px;background:linear-gradient(90deg,#FF5A5F,#FF9A62);transform-origin:left center;}
 """
 
 def scene(cid, dur, body, script, css=""):
@@ -247,8 +250,9 @@ def title_card(cid, start, end, label, title, size, accent="", sub="", hit=None,
     body = f"""
     <div id="{p}-scrim" class="scrim"></div>
     <div id="{p}-wrap" class="stack">
-      {f'<div id="{p}-lbl" class="lbl">{label}</div>' if label else ''}
-      <div id="{p}-ttl" class="ttl" style="font-size:{size}px;margin-top:6px;">{title}</div>
+      {f'<div id="{p}-lbl" class="lbl"><i></i>{label}</div>' if label else ''}
+      <div id="{p}-ttl" class="ttl" style="font-size:{size}px;margin-top:18px;">{title}</div>
+      <div id="{p}-bar" class="bar"></div>
       {f'<div style="text-align:right;padding-right:170px;margin-top:2px;"><span id="{p}-acc" class="acc">{accent}</span></div>' if accent else ''}
       {f'<div id="{p}-sub" class="sub" style="margin-top:14px;">{sub}</div>' if sub else ''}
     </div>"""
@@ -258,6 +262,7 @@ def title_card(cid, start, end, label, title, size, accent="", sub="", hit=None,
     else:
         if label: js.append(f'tl.fromTo("#{p}-lbl", {{opacity:0, y:16}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0);')
         js.append(f'tl.fromTo("#{p}-ttl", {{opacity:0, filter:"blur(10px)", scale:1.06}}, {{opacity:1, filter:"blur(0px)", scale:1, duration:0.22, ease:"power4.out"}}, {rel(hit, start) if hit else 0.08});')
+    js.append(f'tl.fromTo("#{p}-bar", {{scaleX:{1 if static else 0}}}, {{scaleX:1, duration:{0.01 if static else 0.45}, ease:"expo.out"}}, {0 if static else 0.2});')
     if accent: js.append(f'tl.fromTo("#{p}-acc", {{opacity:0, y:10}}, {{opacity:1, y:0, duration:0.3, ease:"back.out(2)"}}, {0.35 if not static else 0.2});')
     if sub: js.append(f'tl.fromTo("#{p}-sub", {{opacity:0, y:10}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0.3);')
     js.append(f'tl.to(["#{p}-wrap","#{p}-scrim"], {{opacity:0, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(end - 0.22, start)});')
@@ -265,7 +270,7 @@ def title_card(cid, start, end, label, title, size, accent="", sub="", hit=None,
 
 # --- HOOK (full title from frame 0) -------------------------------------------
 hs, he = 0.0, seg_end("hook")
-title_card("hook", hs, he, "Repeat customer", "BELI KERETA<br>KALI KE-2", 132, accent="dengan Jo", static=True)
+title_card("hook", hs, he, "Repeat customer", 'BELI KERETA<br><span class="hot">KALI KE-2</span>', 132, accent="dengan Jo", static=True)
 
 # --- NAME ------------------------------------------------------------------------
 ns, ne = T["a1"] + 0.45, T["b"]
@@ -273,21 +278,21 @@ title_card("name", ns, ne, "Perodua", "JO HASHIM", 130)
 
 # --- DELIVERY ------------------------------------------------------------------
 ds, de = T["b"], seg_end("b") + 0.6
-title_card("delivery", ds, de, "Delivery hari ini", "PERODUA BEZZA", 108, accent="ke Rawang")
+title_card("delivery", ds, de, "Delivery hari ini", 'PERODUA <span class="hot">BEZZA</span>', 108, accent="ke Rawang")
 
 # --- REPEAT CUSTOMER ---------------------------------------------------------------
 ks, ke = T["kali2"] - 0.1, seg_end("f2")
-title_card("repeat", ks, ke, "Repeat customer", "KALI KE-2", 150)
+title_card("repeat", ks, ke, "Repeat customer", 'KALI <span class="hot">KE-2</span>', 150)
 
 # --- 1 MINGGU (body) ----------------------------------------------------------------
 ms, me = seg_start("h") + 0.05, seg_end("h")
-title_card("minggu", ms, me, "Kereta sampai dalam", "1 MINGGU", 160, hit=T["minggu1"])
+title_card("minggu", ms, me, "Kereta sampai dalam", '<span class="hot">1</span> MINGGU', 160, hit=T["minggu1"])
 
 # --- CTA ----------------------------------------------------------------------------
 os_, oe = seg_start("o") + 0.2, T["salam"] - 0.1
 card("cta", os_, oe, """
     <div id="ca-scrim" class="scrim"></div>
-    <div id="ca-q" class="ttl" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-size:130px;">BERMINAT?</div>
+    <div id="ca-q" class="ttl" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-size:130px;">BERMINAT<span class="hot">?</span></div>
     <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:720px;top:1320px;padding:28px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:800;font-size:52px;letter-spacing:-.01em;box-shadow:0 12px 0 #0b4fa8,0 26px 50px rgba(0,0,0,.30);">tekan beg biru</div>
     <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:1475px;" width="110" height="110" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
 """, f"""
@@ -346,11 +351,16 @@ for gi, g in enumerate(groups):
     ge = fr(min(max(g[-1]["e"] + 0.25, gs + 0.5), nxt, TOTAL - 0.02))
     text_len = sum(len(w["text"]) for w in g) + len(g) - 1
     fs = int(min(56, 820 / max(1, text_len * 0.52)))
-    spans = []
-    for wi, w in enumerate(g):
-        key = re.sub(r"[^\w]", "", w["text"].lower())
-        cls = "cw hl" if key in HIGHLIGHT else "cw"
-        spans.append(f'<span id="cw{gi}_{wi}" class="{cls}">{html.escape(w["text"] if w["text"] in KEEP_CASE else w["text"].lower())}</span>')
+    runs = []  # consecutive keywords share one pill
+    for w in g:
+        hl = re.sub(r"[^\w]", "", w["text"].lower()) in HIGHLIGHT
+        txt = w["text"] if w["text"] in KEEP_CASE else w["text"].lower()
+        if runs and runs[-1][0] == hl and hl:
+            runs[-1][1].append(txt)
+        else:
+            runs.append([hl, [txt]])
+    spans = [f'<span id="cw{gi}_{ri}" class="{"cw hl" if hl else "cw"}">{html.escape(" ".join(ws))}</span>'
+             for ri, (hl, ws) in enumerate(runs)]
     cap_body.append(f'    <div id="cg{gi}" class="cg" style="font-size:{fs}px;">{" ".join(spans)}</div>')
     cap_js.append(f'tl.set("#cg{gi}",{{visibility:"visible"}},{gs:.3f});')
     cap_js.append(f'tl.fromTo("#cg{gi}",{{opacity:0,y:8}},{{opacity:1,y:0,duration:0.08,ease:"power2.out"}},{gs:.3f});')
@@ -359,9 +369,9 @@ for gi, g in enumerate(groups):
 
 cap_css = """
 #root{position:absolute;inset:0;font-family:'Inter',sans-serif;}
-.cg{position:absolute;left:110px;right:110px;top:1340px;text-align:center;font-weight:600;line-height:1.15;letter-spacing:-.01em;color:#fff;opacity:0;visibility:hidden;overflow:visible;text-shadow:0 2px 3px rgba(0,0,0,.45),0 4px 18px rgba(0,0,0,.35);}
+.cg{position:absolute;left:110px;right:110px;top:1340px;text-align:center;font-weight:650;line-height:1.3;letter-spacing:-.01em;color:#fff;opacity:0;visibility:hidden;overflow:visible;text-shadow:0 2px 3px rgba(0,0,0,.55),0 4px 18px rgba(0,0,0,.40);}
 .cw{display:inline;}
-.cw.hl{color:#F7C948;font-weight:800;}
+.cw.hl{display:inline-block;padding:0 12px 2px;margin:0 2px;border-radius:12px;background:#FFFFFF;color:#B0182F;font-weight:800;text-shadow:none;box-shadow:0 4px 16px rgba(0,0,0,.28);}
 """
 (comp / "captions.html").write_text(f"""<template>
   <style>{cap_css}</style>

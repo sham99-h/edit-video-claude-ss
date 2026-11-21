@@ -4,6 +4,15 @@
 **Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v9 (belum render final)**
 **Preview:** `renders/PREVIEW_bezza_testimoni_v9.mp4` (540×960, watermark)
 
+## Perubahan v11 (storyboard sahaja — belum dirender)
+
+Video rujukan diambil sebagai **inspirasi struktur sahaja** (label kecil + tajuk besar tebal, caption huruf kecil). Palet sendiri, serasi dengan kereta merah maroon:
+- Tajuk **putih Inter Black**, satu kata kunci dalam **gradien coral** (#FF5A5F → #FF9A62) + garis bawah coral beranimasi.
+- Label dalam **pil kaca** (putih lutsinar) dengan titik coral.
+- Aksen kecil italic merah jambu lembut (#FFD9CF).
+- Caption putih huruf kecil; kata kunci dalam **pil putih, teks merah maroon** (#B0182F) — jelas walaupun atas reben merah. Kata kunci bersebelahan berkongsi satu pil.
+- Butang CTA kekal biru (sebab "beg biru").
+
 ## Perubahan v10 (storyboard sahaja — belum dirender: `STORYBOARD.jpg`)
 
 **Gaya font ikut video rujukan TikTok** (`build/font_reference.png`):
