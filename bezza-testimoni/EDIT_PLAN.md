@@ -4,6 +4,14 @@
 **Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v9 (belum render final)**
 **Preview:** `renders/PREVIEW_bezza_testimoni_v9.mp4` (540×960, watermark)
 
+## Perubahan v10 (storyboard sahaja — belum dirender: `STORYBOARD.jpg`)
+
+**Gaya font ikut video rujukan TikTok** (`build/font_reference.png`):
+- Tajuk: label kecil putih huruf besar + tajuk besar **kuning pastel (#F7E36B), Inter Black, jarak huruf rapat**, bayang lembut, tiada outline. Aksen kecil kuning condong ("dengan Jo", "ke Rawang").
+- Scrim gelap lembut di bahagian atas supaya tajuk kuning terbaca atas bumbung putih.
+- Caption: **huruf kecil, Inter semi-bold putih**, bayang lembut tanpa outline, kata kunci **kuning tebal**, 4–5 perkataan sebaris (paras peha).
+- Kotak hitam/merah lama dibuang. Butang CTA biru dikekalkan (font Inter, "tekan beg biru").
+
 ## Perubahan v9 — suara pecah dibaiki
 
 **Punca:** (1) suara Jo di "apa pesanan untuk customer kat luar" sangat perlahan dalam rakaman (−36 dB), jadi dikuatkan +26.5 dB — dan sempadan gain jatuh 0.02s *selepas* customer mula sebut "okay", jadi suara customer pun dikuatkan +26 dB lalu dihimpit limiter (pecah). (2) Di semua klip, puncak selepas gain naik sampai +9 dB atas had dan dihimpit kuat oleh leveller/limiter.

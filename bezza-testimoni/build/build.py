@@ -90,6 +90,7 @@ CORRECTIONS = {
     58.70: ["kereta"],             # caption: "nak cepat kereta proses"
     70.46: [],                     # "so" (filler)
 }
+KEEP_CASE = {"SA", "X", "PJ."}
 HIGHLIGHT = {"3", "hari", "bank", "cepat", "1", "minggu", "2", "kedua", "loan",
              "jo", "bezza", "rawang", "dibayar", "beg", "biru",
              "bukan", "iklan", "kali", "hashim", "serius"}
@@ -167,11 +168,20 @@ cap.sort(key=lambda w: w["s"])
 groups, cur = [], []
 for i, w in enumerate(cap):
     glue = cur and (cur[-1]["text"] in ("Bang", "1", "2", "3") ) and w["seg"] == cur[-1]["seg"]
-    if cur and not glue and (len(cur) >= 3 or w["seg"] != cur[-1]["seg"] or w["s"] - cur[-1]["e"] >= 0.15
+    if cur and not glue and (len(cur) >= 5 or w["seg"] != cur[-1]["seg"] or w["s"] - cur[-1]["e"] >= 0.15
                 or cur[-1]["brk"] or re.search(r"[.,?!]$", cur[-1]["text"])):
         groups.append(cur); cur = []
     cur.append(w)
 if cur: groups.append(cur)
+# fold a lone trailing word ("tu.", "sahaja", "cepat") into the group before it
+merged = []
+for g in groups:
+    if merged and len(g) == 1 and len(merged[-1]) <= 5 and g[0]["seg"] == merged[-1][-1]["seg"] \
+            and g[0]["s"] - merged[-1][-1]["e"] < 0.35 and not re.search(r"[.?!]$", merged[-1][-1]["text"]):
+        merged[-1] = merged[-1] + g
+    else:
+        merged.append(g)
+groups = merged
 
 # ---------------------------------------------------------------------------
 # 4. OVERLAY CARDS (each its own scene file)  times in OUTPUT seconds
@@ -199,12 +209,13 @@ T = {
 }
 
 CARD_CSS = """
-#root{position:absolute;inset:0;font-family:'Montserrat',sans-serif;}
-.chip{position:absolute;display:inline-block;padding:14px 30px;border-radius:999px;font-weight:800;font-size:34px;letter-spacing:.06em;text-transform:uppercase;}
-.red{background:#D7192A;color:#fff;}
-.ink{background:#111;color:#fff;}
-.yel{color:#FFD400;}
-.box{position:absolute;background:#111;color:#fff;border-radius:28px;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+#root{position:absolute;inset:0;font-family:'Inter',sans-serif;}
+.scrim{position:absolute;left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,rgba(20,16,12,.55) 0%,rgba(20,16,12,.38) 45%,rgba(20,16,12,0) 100%);}
+.stack{position:absolute;left:0;right:0;top:300px;text-align:center;}
+.lbl{font-weight:700;font-size:44px;letter-spacing:.01em;color:#fff;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.ttl{font-weight:900;letter-spacing:-.05em;line-height:.95;color:#F7E36B;text-shadow:0 4px 16px rgba(0,0,0,.30);}
+.acc{display:inline-block;font-weight:700;font-size:44px;color:#F7E36B;transform:rotate(-6deg);text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.sub{font-weight:600;font-size:38px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);}
 """
 
 def scene(cid, dur, body, script, css=""):
@@ -230,107 +241,69 @@ def card(cid, start, end, body, script, css=""):
 def rel(t, base):  # relative time inside a card
     return round(t - base, 3)
 
-# --- HOOK ------------------------------------------------------------------
+def title_card(cid, start, end, label, title, size, accent="", sub="", hit=None, static=False):
+    """reference style: small white label, big pastel-yellow heavy title, optional tilted accent"""
+    p = cid[:2]
+    body = f"""
+    <div id="{p}-scrim" class="scrim"></div>
+    <div id="{p}-wrap" class="stack">
+      {f'<div id="{p}-lbl" class="lbl">{label}</div>' if label else ''}
+      <div id="{p}-ttl" class="ttl" style="font-size:{size}px;margin-top:6px;">{title}</div>
+      {f'<div style="text-align:right;padding-right:170px;margin-top:2px;"><span id="{p}-acc" class="acc">{accent}</span></div>' if accent else ''}
+      {f'<div id="{p}-sub" class="sub" style="margin-top:14px;">{sub}</div>' if sub else ''}
+    </div>"""
+    js = [f'tl.fromTo("#{p}-scrim", {{opacity:{1 if static else 0}}}, {{opacity:1, duration:{0.01 if static else 0.3}}}, 0);']
+    if static:
+        js.append(f'tl.fromTo("#{p}-wrap", {{opacity:1}}, {{opacity:1, duration:0.01}}, 0);')
+    else:
+        if label: js.append(f'tl.fromTo("#{p}-lbl", {{opacity:0, y:16}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0);')
+        js.append(f'tl.fromTo("#{p}-ttl", {{opacity:0, filter:"blur(10px)", scale:1.06}}, {{opacity:1, filter:"blur(0px)", scale:1, duration:0.22, ease:"power4.out"}}, {rel(hit, start) if hit else 0.08});')
+    if accent: js.append(f'tl.fromTo("#{p}-acc", {{opacity:0, y:10}}, {{opacity:1, y:0, duration:0.3, ease:"back.out(2)"}}, {0.35 if not static else 0.2});')
+    if sub: js.append(f'tl.fromTo("#{p}-sub", {{opacity:0, y:10}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0.3);')
+    js.append(f'tl.to(["#{p}-wrap","#{p}-scrim"], {{opacity:0, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(end - 0.22, start)});')
+    card(cid, start, end, body, "\n".join("    " + l for l in js))
+
+# --- HOOK (full title from frame 0) -------------------------------------------
 hs, he = 0.0, seg_end("hook")
-card("hook", hs, he, f"""
-    <div id="hk-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
-      <div id="hk-line" style="display:inline-block;background:#D7192A;color:#fff;border-radius:999px;padding:16px 40px;font-weight:900;font-size:46px;letter-spacing:.04em;">REPEAT CUSTOMER</div>
-      <div id="hk-big" style="margin-top:16px;font-weight:900;font-size:120px;line-height:1.02;color:#FFD400;-webkit-text-stroke:11px #111;paint-order:stroke fill;text-shadow:0 12px 0 #111;">BELI KERETA<br>KALI KE-2</div>
-    </div>
-""", f"""
-    tl.fromTo("#hk-wrap", {{opacity:1, scale:1}}, {{opacity:1, scale:1, duration:0.01}}, 0);
-    tl.to("#hk-big", {{keyframes:[{{scale:1.1, duration:0.1, ease:"power2.out"}}, {{scale:1, duration:0.22, ease:"power2.inOut"}}]}}, {rel(T['duakali'], hs)});
-    tl.to("#hk-wrap", {{opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in"}}, {rel(he - 0.25, hs)});
-""")
+title_card("hook", hs, he, "Repeat customer", "BELI KERETA<br>KALI KE-2", 132, accent="dengan Jo", static=True)
 
-# --- NAME (Joe) --------------------------------------------------------------
+# --- NAME ------------------------------------------------------------------------
 ns, ne = T["a1"] + 0.45, T["b"]
-card("name", ns, ne, """
-    <div id="nm-card" class="box" style="left:130px;top:330px;padding:30px 44px 30px 60px;overflow:hidden;">
-      <div id="nm-bar" style="position:absolute;left:0;top:0;bottom:0;width:18px;background:#D7192A;"></div>
-      <div id="nm-name" style="font-weight:900;font-size:76px;letter-spacing:-.01em;line-height:1;">JO HASHIM</div>
-      <div id="nm-role" style="margin-top:12px;font-weight:600;font-size:34px;color:#ddd;">Perodua</div>
-    </div>
-""", f"""
-    tl.fromTo("#nm-card", {{clipPath:"inset(0 100% 0 0)"}}, {{clipPath:"inset(0 0% 0 0)", duration:0.5, ease:"expo.out"}}, 0);
-    tl.fromTo("#nm-name", {{opacity:0, x:-30}}, {{opacity:1, x:0, duration:0.4, ease:"power4.out"}}, 0.12);
-    tl.fromTo("#nm-role", {{opacity:0, x:-30}}, {{opacity:1, x:0, duration:0.4, ease:"power4.out"}}, 0.22);
-    tl.to("#nm-card", {{opacity:0, x:-60, duration:0.2, ease:"power3.in"}}, {rel(ne - 0.22, ns)});
-""")
+title_card("name", ns, ne, "Perodua", "JO HASHIM", 130)
 
-# --- DELIVERY (Bezza -> Rawang) --------------------------------------------
+# --- DELIVERY ------------------------------------------------------------------
 ds, de = T["b"], seg_end("b") + 0.6
-card("delivery", ds, de, """
-    <div id="dl-tag" class="chip red" style="left:130px;top:320px;">Delivery hari ini</div>
-    <div id="dl-card" class="box" style="left:130px;top:405px;padding:26px 44px;">
-      <div style="font-weight:900;font-size:62px;line-height:1;">PERODUA <span class="yel">BEZZA</span></div>
-      <div id="dl-loc" style="margin-top:14px;font-weight:700;font-size:40px;display:flex;align-items:center;gap:14px;">
-        <svg width="34" height="44" viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0zm0 17a5 5 0 110-10 5 5 0 010 10z" fill="#D7192A"/></svg>
-        Rawang
-      </div>
-    </div>
-""", f"""
-    tl.fromTo("#dl-tag", {{opacity:0, y:20}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0);
-    tl.fromTo("#dl-card", {{opacity:0, scale:0.85}}, {{opacity:1, scale:1, duration:0.4, ease:"back.out(1.6)"}}, 0.08);
-    tl.fromTo("#dl-loc", {{opacity:0, x:-20}}, {{opacity:1, x:0, duration:0.3, ease:"power4.out"}}, {rel(out(7.56), ds)});
-    tl.to(["#dl-tag","#dl-card"], {{opacity:0, y:-30, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(de - 0.22, ds)});
-""")
+title_card("delivery", ds, de, "Delivery hari ini", "PERODUA BEZZA", 108, accent="ke Rawang")
 
-# --- REPEAT CUSTOMER --------------------------------------------------------
+# --- REPEAT CUSTOMER ---------------------------------------------------------------
 ks, ke = T["kali2"] - 0.1, seg_end("f2")
-card("repeat", ks, ke, """
-    <div id="rp-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
-      <div id="rp-chip" class="chip ink" style="position:relative;">Repeat Customer</div>
-      <div id="rp-big" style="margin-top:18px;font-weight:900;font-size:124px;line-height:1;color:#fff;-webkit-text-stroke:10px #D7192A;paint-order:stroke fill;">KALI KE-2</div>
-    </div>
-""", f"""
-    tl.fromTo("#rp-chip", {{opacity:0, y:-20}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0);
-    tl.fromTo("#rp-big", {{opacity:0, scale:1.8}}, {{opacity:1, scale:1, duration:0.3, ease:"expo.out"}}, 0.1);
-    tl.to("#rp-wrap", {{opacity:0, scale:0.9, duration:0.2, ease:"power3.in"}}, {rel(ke - 0.22, ks)});
-""")
+title_card("repeat", ks, ke, "Repeat customer", "KALI KE-2", 150)
 
-# --- 1 MINGGU (body) --------------------------------------------------------
+# --- 1 MINGGU (body) ----------------------------------------------------------------
 ms, me = seg_start("h") + 0.05, seg_end("h")
-card("minggu", ms, me, f"""
-    <div id="mg-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
-      <div id="mg-line" style="display:inline-block;background:#111;color:#fff;border-radius:24px;padding:18px 40px;font-weight:900;font-size:52px;">KERETA SAMPAI DALAM</div>
-      <div id="mg-big" style="margin-top:14px;font-weight:900;font-size:150px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
-    </div>
-""", f"""
-    tl.fromTo("#mg-line", {{opacity:0, y:20}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, 0);
-    tl.fromTo("#mg-big", {{opacity:0, scale:2.2}}, {{opacity:1, scale:1, duration:0.28, ease:"expo.out"}}, {rel(T['minggu1'], ms)});
-    tl.to("#mg-wrap", {{opacity:0, y:-30, filter:"blur(6px)", duration:0.2, ease:"power3.in"}}, {rel(me - 0.22, ms)});
-""")
+title_card("minggu", ms, me, "Kereta sampai dalam", "1 MINGGU", 160, hit=T["minggu1"])
 
 # --- CTA ----------------------------------------------------------------------------
 os_, oe = seg_start("o") + 0.2, T["salam"] - 0.1
 card("cta", os_, oe, """
-    <div id="ca-q" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-weight:900;font-size:96px;color:#fff;-webkit-text-stroke:9px #111;paint-order:stroke fill;">BERMINAT?</div>
-    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:740px;top:1320px;padding:30px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:900;font-size:54px;box-shadow:0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35);">TEKAN BEG BIRU</div>
-    <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:1480px;" width="120" height="120" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
+    <div id="ca-scrim" class="scrim"></div>
+    <div id="ca-q" class="ttl" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-size:130px;">BERMINAT?</div>
+    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:720px;top:1320px;padding:28px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:800;font-size:52px;letter-spacing:-.01em;box-shadow:0 12px 0 #0b4fa8,0 26px 50px rgba(0,0,0,.30);">tekan beg biru</div>
+    <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:1475px;" width="110" height="110" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
 """, f"""
-    tl.fromTo("#ca-q", {{opacity:0, scale:1.6}}, {{opacity:1, scale:1, duration:0.3, ease:"expo.out"}}, {rel(T['berminat'] - 0.35, os_)});
+    tl.fromTo("#ca-scrim", {{opacity:0}}, {{opacity:1, duration:0.3}}, {rel(T['berminat'] - 0.4, os_)});
+    tl.fromTo("#ca-q", {{opacity:0, filter:"blur(10px)", scale:1.06}}, {{opacity:1, filter:"blur(0px)", scale:1, duration:0.22, ease:"power4.out"}}, {rel(T['berminat'] - 0.35, os_)});
     tl.fromTo("#ca-btn", {{opacity:0, y:60, scale:0.8}}, {{opacity:1, y:0, scale:1, duration:0.4, ease:"back.out(1.6)"}}, {rel(T['tekan'], os_)});
-    tl.to("#ca-btn", {{scale:0.93, y:10, boxShadow:"0 4px 0 #0b4fa8,0 10px 30px rgba(0,0,0,.35)", duration:0.08, ease:"power2.in"}}, {rel(T['biru'] + 0.15, os_)});
-    tl.to("#ca-btn", {{scale:1, y:0, boxShadow:"0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35)", duration:0.2, ease:"power2.out"}}, {rel(T['biru'] + 0.23, os_)});
+    tl.to("#ca-btn", {{scale:0.93, y:10, boxShadow:"0 3px 0 #0b4fa8,0 10px 30px rgba(0,0,0,.30)", duration:0.08, ease:"power2.in"}}, {rel(T['biru'] + 0.15, os_)});
+    tl.to("#ca-btn", {{scale:1, y:0, boxShadow:"0 12px 0 #0b4fa8,0 26px 50px rgba(0,0,0,.30)", duration:0.2, ease:"power2.out"}}, {rel(T['biru'] + 0.23, os_)});
     tl.fromTo("#ca-arrow", {{opacity:0, y:-30}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, {rel(T['biru'], os_)});
     tl.to("#ca-arrow", {{y:30, duration:0.3, ease:"power1.inOut", yoyo:true, repeat:3}}, {rel(T['biru'] + 0.3, os_)});
-    tl.to(["#ca-q","#ca-btn","#ca-arrow"], {{opacity:0, duration:0.15}}, {rel(oe - 0.16, os_)});
+    tl.to(["#ca-q","#ca-btn","#ca-arrow","#ca-scrim"], {{opacity:0, duration:0.15}}, {rel(oe - 0.16, os_)});
 """)
 
 # --- END CARD -------------------------------------------------------------------------
 es, ee = T["salam"] - 0.1, TOTAL
-card("endcard", es, ee, """
-    <div id="ec-scrim" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,12,.82) 0%,rgba(10,10,12,.55) 45%,rgba(10,10,12,0) 70%);"></div>
-    <div id="ec-ty" style="position:absolute;left:0;right:0;top:360px;text-align:center;font-weight:900;font-size:100px;color:#fff;line-height:1;">TERIMA KASIH!</div>
-    <div id="ec-name" style="position:absolute;left:0;right:0;top:510px;text-align:center;font-weight:900;font-size:64px;color:#FFD400;">JO HASHIM</div>
-    <div id="ec-role" style="position:absolute;left:0;right:0;top:590px;text-align:center;font-weight:600;font-size:36px;color:#eee;">Perodua</div>
-""", f"""
-    tl.fromTo("#ec-scrim", {{opacity:0}}, {{opacity:1, duration:0.4, ease:"power2.out"}}, 0);
-    tl.fromTo("#ec-ty", {{opacity:0, filter:"blur(8px)"}}, {{opacity:1, filter:"blur(0px)", duration:0.2, ease:"power4.out"}}, 0.1);
-    tl.fromTo("#ec-name", {{opacity:0, y:20}}, {{opacity:1, y:0, duration:0.35, ease:"expo.out"}}, 0.3);
-    tl.fromTo("#ec-role", {{opacity:0, y:20}}, {{opacity:1, y:0, duration:0.35, ease:"expo.out"}}, 0.42);
-""")
+title_card("endcard", es, ee, "Terima kasih", "JO HASHIM", 140, sub="Perodua")
 
 # ---------------------------------------------------------------------------
 # 5. SOUND FX  (file, picture time, peak offset, volume)
@@ -372,23 +345,23 @@ for gi, g in enumerate(groups):
     nxt = groups[gi + 1][0]["s"] - 0.04 if gi + 1 < len(groups) else TOTAL
     ge = fr(min(max(g[-1]["e"] + 0.25, gs + 0.5), nxt, TOTAL - 0.02))
     text_len = sum(len(w["text"]) for w in g) + len(g) - 1
-    fs = int(min(64, 800 / max(1, text_len * 0.70)))
+    fs = int(min(56, 820 / max(1, text_len * 0.52)))
     spans = []
     for wi, w in enumerate(g):
         key = re.sub(r"[^\w]", "", w["text"].lower())
         cls = "cw hl" if key in HIGHLIGHT else "cw"
-        spans.append(f'<span id="cw{gi}_{wi}" class="{cls}">{html.escape(w["text"].upper())}</span>')
-        cap_js.append(f'tl.fromTo("#cw{gi}_{wi}",{{opacity:0,scale:0.6}},{{opacity:1,scale:1,duration:0.14,ease:"back.out(2.2)"}},{max(gs, w["s"] - 0.03):.3f});')
+        spans.append(f'<span id="cw{gi}_{wi}" class="{cls}">{html.escape(w["text"] if w["text"] in KEEP_CASE else w["text"].lower())}</span>')
     cap_body.append(f'    <div id="cg{gi}" class="cg" style="font-size:{fs}px;">{" ".join(spans)}</div>')
-    cap_js.append(f'tl.set("#cg{gi}",{{opacity:1,visibility:"visible"}},{gs:.3f});')
+    cap_js.append(f'tl.set("#cg{gi}",{{visibility:"visible"}},{gs:.3f});')
+    cap_js.append(f'tl.fromTo("#cg{gi}",{{opacity:0,y:8}},{{opacity:1,y:0,duration:0.08,ease:"power2.out"}},{gs:.3f});')
     cap_js.append(f'tl.to("#cg{gi}",{{opacity:0,duration:0.08,ease:"power2.in"}},{ge - 0.08:.3f});')
     cap_js.append(f'tl.set("#cg{gi}",{{opacity:0,visibility:"hidden"}},{ge:.3f});')
 
 cap_css = """
-#root{position:absolute;inset:0;font-family:'Montserrat',sans-serif;}
-.cg{position:absolute;left:130px;right:130px;top:1340px;text-align:center;font-weight:900;line-height:1.1;color:#fff;opacity:0;visibility:hidden;overflow:visible;}
-.cw{display:inline-block;-webkit-text-stroke:10px #000;paint-order:stroke fill;text-shadow:0 6px 14px rgba(0,0,0,.45);}
-.cw.hl{color:#FFD400;}
+#root{position:absolute;inset:0;font-family:'Inter',sans-serif;}
+.cg{position:absolute;left:110px;right:110px;top:1340px;text-align:center;font-weight:600;line-height:1.15;letter-spacing:-.01em;color:#fff;opacity:0;visibility:hidden;overflow:visible;text-shadow:0 2px 3px rgba(0,0,0,.45),0 4px 18px rgba(0,0,0,.35);}
+.cw{display:inline;}
+.cw.hl{color:#F7C948;font-weight:800;}
 """
 (comp / "captions.html").write_text(f"""<template>
   <style>{cap_css}</style>
