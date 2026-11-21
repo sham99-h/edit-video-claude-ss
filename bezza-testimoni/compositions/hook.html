@@ -9,20 +9,16 @@
 </style>
   <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-layout-allow-overlap>
 
-    <div id="hk-tag" class="chip red" style="left:0;right:0;margin:auto;width:520px;text-align:center;top:296px;white-space:nowrap;font-size:30px;">Testimoni Customer</div>
-    <div id="hk-line" class="box" style="left:130px;right:130px;top:380px;padding:22px 0;text-align:center;font-weight:900;font-size:52px;letter-spacing:-.01em;">DEAL BANK LULUS DALAM</div>
-    <div id="hk-big" style="position:absolute;left:0;right:0;top:470px;text-align:center;font-weight:900;font-size:190px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">3 HARI</div>
-    <div id="hk-ok" class="chip" style="left:0;right:0;margin:auto;width:440px;text-align:center;top:735px;background:#16A34A;color:#fff;font-size:44px;">&#10003; Sahaja!</div>
+    <div id="hk-line" class="box" style="left:150px;right:150px;top:340px;padding:22px 0;text-align:center;font-weight:900;font-size:56px;letter-spacing:-.01em;">KERETA SAMPAI DALAM</div>
+    <div id="hk-big" style="position:absolute;left:0;right:0;top:450px;text-align:center;font-weight:900;font-size:170px;line-height:1;color:#FFD400;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 14px 0 #111;">1 MINGGU</div>
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
 
-    tl.fromTo("#hk-tag", {opacity:1, y:0}, {opacity:1, y:0, duration:0.01}, 0);
     tl.fromTo("#hk-line", {opacity:1, scale:1}, {opacity:1, scale:1, duration:0.01}, 0);
-    tl.fromTo("#hk-big", {opacity:0, scale:2.4}, {opacity:1, scale:1, duration:0.28, ease:"expo.out"}, 1.5);
-    tl.fromTo("#hk-ok", {opacity:0, scale:0.4}, {opacity:1, scale:1, duration:0.35, ease:"back.out(2)"}, 2.133);
-    tl.to(["#hk-tag","#hk-line","#hk-big","#hk-ok"], {opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in", stagger:0.03}, 4.633);
+    tl.fromTo("#hk-big", {opacity:0, scale:2.4}, {opacity:1, scale:1, duration:0.28, ease:"expo.out"}, 3.667);
+    tl.to(["#hk-line","#hk-big"], {opacity:0, y:-40, filter:"blur(8px)", duration:0.2, ease:"power3.in", stagger:0.03}, 4.0);
 
     window.__timelines["hook"] = tl;
   </script>
