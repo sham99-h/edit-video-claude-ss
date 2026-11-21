@@ -407,7 +407,7 @@ for i, (name, t, vol) in enumerate(SFX):
 FACES = json.load(open(ROOT / "build/faces.json"))
 FRAMING = {  # segment: (subject, scale at start, scale at end)
     "hook": ("cust", 1.22, 1.30), "a1": ("jo", 1.12, 1.16), "a2": ("jo", 1.30, 1.32),
-    "b": ("two", 1.00, 1.04), "c": ("jo", 1.20, 1.24), "d": ("two", 1.06, 1.08),
+    "b": ("two", 1.00, 1.04), "c": ("two", 1.00, 1.04), "d": ("two", 1.06, 1.08),
     "e": ("cust", 1.22, 1.27), "f1": ("cust", 1.34, 1.36), "f2": ("cust", 1.24, 1.26),
     "deal": ("cust", 1.18, 1.28), "h": ("cust", 1.34, 1.38), "i": ("two", 1.06, 1.10),
     "j": ("cust", 1.24, 1.30), "k": ("jo", 1.28, 1.30), "l1": ("jo", 1.22, 1.26),

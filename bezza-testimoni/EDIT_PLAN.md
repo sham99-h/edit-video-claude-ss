@@ -1,8 +1,12 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v14
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v15
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW v14 (kualiti penuh, tanpa watermark; belum diluluskan sebagai final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v14.mp4` (540×960, watermark)
+**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW v15 (kualiti penuh, tanpa watermark; belum diluluskan sebagai final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v15.mp4` (540×960, watermark)
+
+## Perubahan v15
+
+- **Babak "Bang, boleh tak bagi feedback…" kini two-shot** (Jo + customer dalam frame, zoom 1.0→1.04) — tidak lagi fokus pada Jo sahaja.
 
 ## Perubahan v14 — reframe, grade, bunyi, "jangan nampak AI edit"
 
