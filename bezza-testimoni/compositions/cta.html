@@ -10,15 +10,15 @@
   <div id="root" data-composition-id="cta" data-width="1080" data-height="1920" data-layout-allow-overlap>
 
     <div id="ca-q" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-weight:900;font-size:96px;color:#fff;-webkit-text-stroke:9px #111;paint-order:stroke fill;">BERMINAT?</div>
-    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:740px;top:500px;padding:30px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:900;font-size:54px;box-shadow:0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35);">TEKAN BEG BIRU</div>
-    <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:660px;" width="120" height="120" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
+    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:740px;top:1320px;padding:30px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:900;font-size:54px;box-shadow:0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35);">TEKAN BEG BIRU</div>
+    <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:1480px;" width="120" height="120" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
 
     tl.fromTo("#ca-q", {opacity:0, scale:1.6}, {opacity:1, scale:1, duration:0.3, ease:"expo.out"}, 0.883);
-    tl.fromTo("#ca-btn", {opacity:0, y:60, scale:0.8}, {opacity:1, y:0, scale:1, duration:0.4, ease:"back.out(1.6)"}, 2.467);
+    tl.fromTo("#ca-btn", {opacity:0, y:60, scale:0.8}, {opacity:1, y:0, scale:1, duration:0.4, ease:"back.out(1.6)"}, 2.567);
     tl.to("#ca-btn", {scale:0.93, y:10, boxShadow:"0 4px 0 #0b4fa8,0 10px 30px rgba(0,0,0,.35)", duration:0.08, ease:"power2.in"}, 3.283);
     tl.to("#ca-btn", {scale:1, y:0, boxShadow:"0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35)", duration:0.2, ease:"power2.out"}, 3.363);
     tl.fromTo("#ca-arrow", {opacity:0, y:-30}, {opacity:1, y:0, duration:0.3, ease:"power4.out"}, 3.133);

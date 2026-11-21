@@ -1,10 +1,17 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v6
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v8
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 51.2s, 1080×1920, 30fps — **status: PREVIEW DRAF v6 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v6.mp4` (540×960, watermark)
+**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v8 (belum render final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v8.mp4` (540×960, watermark)
 
-## Perubahan v7 (preview: `renders/PREVIEW_bezza_testimoni_v7.mp4`)
+## Perubahan v8 (ikut feedback)
+
+1. **Suara customer (lelaki bertopi) +3 dB** berbanding Jo (diukur: customer ≈ −12.3 LUFS, Jo ≈ −15.3 LUFS per klip).
+2. **"Aa, apa" di 0:19–0:20 dipotong** (src 27.63–28.72) → "Ni saya ambil… Bezza lah".
+3. **"Memang" sebelum soalan Jo dipotong** (src 47.45–47.90) → "…dapat kereta. Apa pesanan untuk customer kat luar?"
+4. **Butang "TEKAN BEG BIRU" diturunkan ke tempat caption** (y≈1320) + anak panah di bawahnya; caption "tekan beg biru dekat bawah" dibuang.
+
+## Perubahan v7 (preview: `renders/PREVIEW_bezza_testimoni_v8.mp4`)
 
 - **Kad "PESANAN UNTUK ANDA?" dibuang** (beserta bunyi pop). Bahagian itu kini caption sahaja.
 

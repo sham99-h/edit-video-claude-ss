@@ -10,6 +10,12 @@ import json, re, subprocess, sys, os
 src, footage = sys.argv[1], sys.argv[2]
 ITER = 5
 SPLITS = {50.82}   # speaker changes inside an edit segment (Jo -> customer in "l1")
+# customer (man in the cap) sits this many dB above Jo
+CUSTOMER_DB = 3.0
+CUSTOMER = {"hook", "e", "f1", "f2", "deal", "h", "i", "j", "n1", "l1@50.82"}
+def offset(name):
+    seg, at = name.split("@")
+    return CUSTOMER_DB if (seg in CUSTOMER or f"{seg}@{at}" in CUSTOMER) else 0.0
 edl = json.load(open(os.path.join(os.path.dirname(__file__), "edl.json")))
 regions = []
 for s in edl["segments"]:
@@ -34,15 +40,16 @@ def render(gains, out):
     subprocess.run(["ffmpeg","-v","error","-y","-i",src,"-vn","-af",chain,"-c:a","pcm_s16le",out], check=True)
 
 L0 = meas(src)
-gains = [max(-12, min(20, -16.0 - L)) for L in L0]
+gains = [max(-12, min(32, -16.0 + offset(n) - L)) for (n, _, _), L in zip(regions, L0)]
 wav = footage + ".bal.wav"
 for it in range(ITER):
     render(gains, wav)
     L = meas(wav)
-    med = sorted(L)[len(L) // 2]
-    print(f"iter {it}: spread {max(L)-min(L):.1f} dB  " + " ".join(f"{n.split('@')[0]}:{v:.1f}" for (n, _, _), v in zip(regions, L)))
+    base = [v - offset(n) for (n, _, _), v in zip(regions, L)]
+    med = sorted(base)[len(base) // 2]
+    print(f"iter {it}: spread {max(base)-min(base):.1f} dB (after offset)  " + " ".join(f"{n.split('@')[0]}:{v:.1f}" for (n, _, _), v in zip(regions, L)))
     if it < ITER - 1:
-        gains = [max(-12, min(32, g + (med - v))) for g, v in zip(gains, L)]
+        gains = [max(-12, min(32, g + (med + offset(n) - v))) for (n, _, _), g, v in zip(regions, gains, L)]
 tmp = footage + ".tmp.mp4"
 subprocess.run(["ffmpeg","-v","error","-y","-i",footage,"-i",wav,"-map","0:v","-map","1:a","-c:v","copy",
                 "-c:a","aac","-b:a","256k","-movflags","+faststart",tmp], check=True)

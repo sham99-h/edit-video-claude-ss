@@ -33,14 +33,17 @@ SEGMENTS = [
     ("d",   18.15, 19.32, 1.10),   # "...kali kedua?" (pause cut)
     #  19.32-21.22 CUT: "Boleh?" + awkward pause
     ("e",   21.22, 25.92, 1.00),   # repeat customer context
-    ("f",   26.56, 29.19, 1.12),   # "Ni saya ambil Bezza lah"
+    ("f1",  26.56, 27.63, 1.12),   # "Ni saya ambil"
+    #  27.63-28.72 CUT: "aa, apa"
+    ("f2",  28.72, 29.19, 1.00),   # "Bezza lah"
     #  29.19-30.86 CUT: "erk erk" + "memang cepat"
     ("deal", 30.86, 35.80, 1.00),  # "Saya buat 3 hari sahaja, dah dapat deal dengan bank"
     ("h",   35.80, 39.10, 1.12),   # "Dan kereta pun dapat dalam 1 minggu lebih"
     ("i",   39.52, 42.47, 1.00),   # "Agak sangat cepat... sales lain"
     ("j",   43.00, 46.08, 1.12),   # "lebih 2 minggu. Ini tak sampai 2 minggu"
     #  46.08-47.45 CUT: "Sepertulah" filler + pause
-    ("k",   47.45, 48.48, 1.00),   # "apa pesanan..." (Jo, boosted in footage)
+    #  47.45-47.90 CUT: customer "memang"
+    ("k",   47.90, 48.48, 1.00),   # "apa pesa-" (Jo)
     ("l1",  49.22, 51.40, 1.12),   # "...untuk customer kat luar? Okay guys"
     #  51.40-52.62 CUT (TikTok): "Ini bukan iklan"
     #  52.62-55.14 used as HOOK
@@ -76,8 +79,12 @@ CORRECTIONS = {
     59.78: ["Jo."],       # "banjur"
     64.34: ["repeat"],             # (cut anyway)
     63.20: [],                     # "sebab" (cut region)
-    74.14: ["beg", "biru"],        # "backbiro" -> "beg biru" (confirmed by Jo's team)
+    74.14: [],                     # "beg biru" - shown on the CTA button instead
     47.20: [],                     # "So" (filler)
+    47.94: ["apa", "pesanan"],     # Jo (the "apa" word timing sits in the cut "memang")
+    73.56: [],                     # "tekan" - shown on the CTA button instead
+    74.58: [],                     # "dekat"
+    74.86: [],                     # "bawah"
     50.82: [],                     # "Okay" caption removed
     51.02: [],                     # "guys" (would stand alone)
     58.70: ["kereta"],             # caption: "nak cepat kereta proses"
@@ -270,7 +277,7 @@ card("delivery", ds, de, """
 """)
 
 # --- REPEAT CUSTOMER --------------------------------------------------------
-ks, ke = T["kali2"] - 0.1, seg_end("f")
+ks, ke = T["kali2"] - 0.1, seg_end("f2")
 card("repeat", ks, ke, """
     <div id="rp-wrap" style="position:absolute;left:0;right:0;top:330px;text-align:center;">
       <div id="rp-chip" class="chip ink" style="position:relative;">Repeat Customer</div>
@@ -299,11 +306,11 @@ card("minggu", ms, me, f"""
 os_, oe = seg_start("o") + 0.2, T["salam"] - 0.1
 card("cta", os_, oe, """
     <div id="ca-q" style="position:absolute;left:0;right:0;top:320px;text-align:center;font-weight:900;font-size:96px;color:#fff;-webkit-text-stroke:9px #111;paint-order:stroke fill;">BERMINAT?</div>
-    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:740px;top:500px;padding:30px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:900;font-size:54px;box-shadow:0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35);">TEKAN BEG BIRU</div>
-    <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:660px;" width="120" height="120" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
+    <div id="ca-btn" style="position:absolute;left:0;right:0;margin:auto;width:740px;top:1320px;padding:30px 0;border-radius:999px;background:#1877F2;color:#fff;text-align:center;font-weight:900;font-size:54px;box-shadow:0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35);">TEKAN BEG BIRU</div>
+    <svg id="ca-arrow" style="position:absolute;left:0;right:0;margin:auto;top:1480px;" width="120" height="120" viewBox="0 0 24 24"><path d="M12 22L2 11h6V2h8v9h6z" fill="#1877F2" stroke="#fff" stroke-width="1"/></svg>
 """, f"""
     tl.fromTo("#ca-q", {{opacity:0, scale:1.6}}, {{opacity:1, scale:1, duration:0.3, ease:"expo.out"}}, {rel(T['berminat'] - 0.35, os_)});
-    tl.fromTo("#ca-btn", {{opacity:0, y:60, scale:0.8}}, {{opacity:1, y:0, scale:1, duration:0.4, ease:"back.out(1.6)"}}, {rel(T['tekan'] - 0.1, os_)});
+    tl.fromTo("#ca-btn", {{opacity:0, y:60, scale:0.8}}, {{opacity:1, y:0, scale:1, duration:0.4, ease:"back.out(1.6)"}}, {rel(T['tekan'], os_)});
     tl.to("#ca-btn", {{scale:0.93, y:10, boxShadow:"0 4px 0 #0b4fa8,0 10px 30px rgba(0,0,0,.35)", duration:0.08, ease:"power2.in"}}, {rel(T['biru'] + 0.15, os_)});
     tl.to("#ca-btn", {{scale:1, y:0, boxShadow:"0 14px 0 #0b4fa8,0 30px 60px rgba(0,0,0,.35)", duration:0.2, ease:"power2.out"}}, {rel(T['biru'] + 0.23, os_)});
     tl.fromTo("#ca-arrow", {{opacity:0, y:-30}}, {{opacity:1, y:0, duration:0.3, ease:"power4.out"}}, {rel(T['biru'], os_)});

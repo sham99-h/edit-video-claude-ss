@@ -1,5 +1,5 @@
 {
- "total": 51.1667,
+ "total": 49.6,
  "segments": [
   {
    "id": "hook",
@@ -51,66 +51,73 @@
    "scale": 1.0
   },
   {
-   "id": "f",
+   "id": "f1",
    "src_in": 26.56,
-   "src_out": 29.19,
+   "src_out": 27.63,
    "out_start": 19.0,
    "scale": 1.12
+  },
+  {
+   "id": "f2",
+   "src_in": 28.72,
+   "src_out": 29.19,
+   "out_start": 20.0667,
+   "scale": 1.0
   },
   {
    "id": "deal",
    "src_in": 30.86,
    "src_out": 35.8,
-   "out_start": 21.6333,
+   "out_start": 20.5333,
    "scale": 1.0
   },
   {
    "id": "h",
    "src_in": 35.8,
    "src_out": 39.1,
-   "out_start": 26.5667,
+   "out_start": 25.4667,
    "scale": 1.12
   },
   {
    "id": "i",
    "src_in": 39.52,
    "src_out": 42.47,
-   "out_start": 29.8667,
+   "out_start": 28.7667,
    "scale": 1.0
   },
   {
    "id": "j",
    "src_in": 43.0,
    "src_out": 46.08,
-   "out_start": 32.8333,
+   "out_start": 31.7333,
    "scale": 1.12
   },
   {
    "id": "k",
-   "src_in": 47.45,
+   "src_in": 47.9,
    "src_out": 48.48,
-   "out_start": 35.9,
+   "out_start": 34.8,
    "scale": 1.0
   },
   {
    "id": "l1",
    "src_in": 49.22,
    "src_out": 51.4,
-   "out_start": 36.9333,
+   "out_start": 35.3667,
    "scale": 1.12
   },
   {
    "id": "n1",
    "src_in": 55.64,
    "src_out": 60.22,
-   "out_start": 39.1,
+   "out_start": 37.5333,
    "scale": 1.0
   },
   {
    "id": "o",
    "src_in": 70.8,
    "src_out": 78.3,
-   "out_start": 43.6667,
+   "out_start": 42.1,
    "scale": 1.0
   }
  ],
@@ -133,21 +140,21 @@
   {
    "id": "repeat",
    "start": 15.0667,
-   "dur": 6.5667
+   "dur": 5.4667
   },
   {
    "id": "minggu",
-   "start": 26.6333,
+   "start": 25.5333,
    "dur": 3.2333
   },
   {
    "id": "cta",
-   "start": 43.8667,
+   "start": 42.3,
    "dur": 4.1667
   },
   {
    "id": "endcard",
-   "start": 48.0333,
+   "start": 46.4667,
    "dur": 3.1333
   }
  ],
@@ -179,27 +186,27 @@
   },
   {
    "name": "impact-bass-1",
-   "at": 29.33,
+   "at": 28.23,
    "vol": 0.2
   },
   {
    "name": "whoosh",
-   "at": 43.67,
+   "at": 42.1,
    "vol": 0.6
   },
   {
    "name": "pop",
-   "at": 45.0,
+   "at": 43.43,
    "vol": 0.8
   },
   {
    "name": "click",
-   "at": 47.18,
+   "at": 45.61,
    "vol": 1.2
   },
   {
    "name": "whoosh-short",
-   "at": 48.18,
+   "at": 46.62,
    "vol": 0.45
   }
  ],
@@ -257,8 +264,6 @@
   "korang yang betul-betul",
   "berminat",
   "jangan lupa",
-  "tekan beg biru",
-  "dekat bawah",
   "Assalamualaikum"
  ]
 }
