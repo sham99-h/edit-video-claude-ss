@@ -1,0 +1,28 @@
+<template>
+  <style>
+#root{position:absolute;inset:0;font-family:'Montserrat',sans-serif;}
+.chip{position:absolute;display:inline-block;padding:14px 30px;border-radius:999px;font-weight:800;font-size:34px;letter-spacing:.06em;text-transform:uppercase;}
+.red{background:#D7192A;color:#fff;}
+.ink{background:#111;color:#fff;}
+.yel{color:#FFD400;}
+.box{position:absolute;background:#111;color:#fff;border-radius:28px;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+</style>
+  <div id="root" data-composition-id="endcard" data-width="1080" data-height="1920" data-layout-allow-overlap>
+
+    <div id="ec-scrim" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,12,.82) 0%,rgba(10,10,12,.55) 45%,rgba(10,10,12,0) 70%);"></div>
+    <div id="ec-ty" style="position:absolute;left:0;right:0;top:360px;text-align:center;font-weight:900;font-size:100px;color:#fff;line-height:1;">TERIMA KASIH!</div>
+    <div id="ec-name" style="position:absolute;left:0;right:0;top:510px;text-align:center;font-weight:900;font-size:64px;color:#FFD400;">JOE HASHIM</div>
+    <div id="ec-role" style="position:absolute;left:0;right:0;top:590px;text-align:center;font-weight:600;font-size:36px;color:#eee;">Perodua &middot; DMM Sales (PJ)</div>
+
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#ec-scrim", {opacity:0}, {opacity:1, duration:0.4, ease:"power2.out"}, 0);
+    tl.fromTo("#ec-ty", {opacity:0, filter:"blur(8px)"}, {opacity:1, filter:"blur(0px)", duration:0.2, ease:"power4.out"}, 0.1);
+    tl.fromTo("#ec-name", {opacity:0, y:20}, {opacity:1, y:0, duration:0.35, ease:"expo.out"}, 0.3);
+    tl.fromTo("#ec-role", {opacity:0, y:20}, {opacity:1, y:0, duration:0.35, ease:"expo.out"}, 0.42);
+
+    window.__timelines["endcard"] = tl;
+  </script>
+</template>

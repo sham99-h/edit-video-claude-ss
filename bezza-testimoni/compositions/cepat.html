@@ -1,0 +1,30 @@
+<template>
+  <style>
+#root{position:absolute;inset:0;font-family:'Montserrat',sans-serif;}
+.chip{position:absolute;display:inline-block;padding:14px 30px;border-radius:999px;font-weight:800;font-size:34px;letter-spacing:.06em;text-transform:uppercase;}
+.red{background:#D7192A;color:#fff;}
+.ink{background:#111;color:#fff;}
+.yel{color:#FFD400;}
+.box{position:absolute;background:#111;color:#fff;border-radius:28px;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+</style>
+  <div id="root" data-composition-id="cepat" data-width="1080" data-height="1920" data-layout-allow-overlap>
+
+    <div id="ct-card" class="box" style="left:130px;right:130px;top:330px;padding:30px 40px;">
+      <div id="ct-1" style="display:flex;align-items:center;gap:20px;font-weight:900;font-size:56px;"><svg width="54" height="54" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7z" fill="#FFD400" stroke="#111" stroke-width="1.2"/></svg>LOAN <span class="yel">CEPAT</span></div>
+      <div id="ct-2" style="display:flex;align-items:center;gap:20px;font-weight:900;font-size:56px;margin-top:12px;"><svg width="54" height="54" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7z" fill="#FFD400" stroke="#111" stroke-width="1.2"/></svg>PROSES <span class="yel">CEPAT</span></div>
+      <div id="ct-3" style="margin-top:20px;background:#D7192A;border-radius:18px;padding:14px 0;text-align:center;font-weight:900;font-size:40px;">AMBIL DENGAN BANG JOE</div>
+    </div>
+
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#ct-card", {opacity:0, y:40}, {opacity:1, y:0, duration:0.4, ease:"expo.out"}, 0);
+    tl.fromTo("#ct-1", {opacity:0, x:-40}, {opacity:1, x:0, duration:0.3, ease:"power4.out"}, 0.1);
+    tl.fromTo("#ct-2", {opacity:0, x:-40}, {opacity:1, x:0, duration:0.3, ease:"power4.out"}, 1.85);
+    tl.fromTo("#ct-3", {opacity:0, scale:0.7}, {opacity:1, scale:1, duration:0.35, ease:"back.out(1.8)"}, 2.583);
+    tl.to("#ct-card", {opacity:0, y:-30, duration:0.18, ease:"power3.in"}, 3.583);
+
+    window.__timelines["cepat"] = tl;
+  </script>
+</template>

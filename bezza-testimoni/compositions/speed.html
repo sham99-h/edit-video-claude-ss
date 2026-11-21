@@ -1,0 +1,31 @@
+<template>
+  <style>
+#root{position:absolute;inset:0;font-family:'Montserrat',sans-serif;}
+.chip{position:absolute;display:inline-block;padding:14px 30px;border-radius:999px;font-weight:800;font-size:34px;letter-spacing:.06em;text-transform:uppercase;}
+.red{background:#D7192A;color:#fff;}
+.ink{background:#111;color:#fff;}
+.yel{color:#FFD400;}
+.box{position:absolute;background:#111;color:#fff;border-radius:28px;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+.sp-d{flex:1;height:46px;border-radius:8px;background:#333;}</style>
+  <div id="root" data-composition-id="speed" data-width="1080" data-height="1920" data-layout-allow-overlap>
+
+    <div id="sp-card" class="box" style="left:130px;right:130px;top:330px;padding:34px 40px;">
+      <div style="font-weight:800;font-size:32px;letter-spacing:.04em;">KERETA SAMPAI DALAM</div>
+      <div id="sp-num" style="font-weight:900;font-size:84px;line-height:1.05;" class="yel">1 MINGGU+</div>
+      <div id="sp-bar" style="margin-top:20px;display:flex;gap:8px;"><div class="sp-d" id="sp-d0"></div><div class="sp-d" id="sp-d1"></div><div class="sp-d" id="sp-d2"></div><div class="sp-d" id="sp-d3"></div><div class="sp-d" id="sp-d4"></div><div class="sp-d" id="sp-d5"></div><div class="sp-d" id="sp-d6"></div><div class="sp-d" id="sp-d7"></div><div class="sp-d" id="sp-d8"></div><div class="sp-d" id="sp-d9"></div><div class="sp-d" id="sp-d10"></div><div class="sp-d" id="sp-d11"></div><div class="sp-d" id="sp-d12"></div><div class="sp-d" id="sp-d13"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:28px;color:#aaa;margin-top:10px;font-weight:600;"><span>Hari 1</span><span>Hari 14</span></div>
+    </div>
+
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#sp-card", {opacity:0, y:40}, {opacity:1, y:0, duration:0.45, ease:"expo.out"}, 0);
+    tl.fromTo("#sp-num", {opacity:0}, {opacity:1, duration:0.2}, 2.567);
+    tl.fromTo(".sp-d", {backgroundColor:"#333"}, {backgroundColor:"#333", duration:0.01}, 0);
+    tl.to(["#sp-d0","#sp-d1","#sp-d2","#sp-d3","#sp-d4","#sp-d5","#sp-d6","#sp-d7"], {backgroundColor:"#FFD400", duration:0.08, stagger:0.07}, 2.117);
+    tl.to("#sp-card", {opacity:0, y:-30, duration:0.2, ease:"power3.in"}, 2.98);
+
+    window.__timelines["speed"] = tl;
+  </script>
+</template>

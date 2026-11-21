@@ -1,0 +1,32 @@
+<template>
+  <style>
+#root{position:absolute;inset:0;font-family:'Montserrat',sans-serif;}
+.chip{position:absolute;display:inline-block;padding:14px 30px;border-radius:999px;font-weight:800;font-size:34px;letter-spacing:.06em;text-transform:uppercase;}
+.red{background:#D7192A;color:#fff;}
+.ink{background:#111;color:#fff;}
+.yel{color:#FFD400;}
+.box{position:absolute;background:#111;color:#fff;border-radius:28px;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+</style>
+  <div id="root" data-composition-id="delivery" data-width="1080" data-height="1920" data-layout-allow-overlap>
+
+    <div id="dl-tag" class="chip red" style="left:130px;top:320px;">Delivery hari ini</div>
+    <div id="dl-card" class="box" style="left:130px;top:405px;padding:26px 44px;">
+      <div style="font-weight:900;font-size:62px;line-height:1;">PERODUA <span class="yel">BEZZA</span></div>
+      <div id="dl-loc" style="margin-top:14px;font-weight:700;font-size:40px;display:flex;align-items:center;gap:14px;">
+        <svg width="34" height="44" viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0zm0 17a5 5 0 110-10 5 5 0 010 10z" fill="#D7192A"/></svg>
+        Rawang
+      </div>
+    </div>
+
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#dl-tag", {opacity:0, y:20}, {opacity:1, y:0, duration:0.3, ease:"power4.out"}, 0);
+    tl.fromTo("#dl-card", {opacity:0, scale:0.85}, {opacity:1, scale:1, duration:0.4, ease:"back.out(1.6)"}, 0.08);
+    tl.fromTo("#dl-loc", {opacity:0, x:-20}, {opacity:1, x:0, duration:0.3, ease:"power4.out"}, 1.733);
+    tl.to(["#dl-tag","#dl-card"], {opacity:0, y:-30, filter:"blur(6px)", duration:0.2, ease:"power3.in"}, 2.513);
+
+    window.__timelines["delivery"] = tl;
+  </script>
+</template>
