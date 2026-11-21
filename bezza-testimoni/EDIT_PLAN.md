@@ -1,8 +1,17 @@
-# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v13
+# Edit Plan — Delivery Perodua Bezza (Jo Hashim) — v14
 
 **Sumber:** video iPhone 80.7s, 9:16 (HDR HLG → ditukar ke SDR)
-**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW DRAF v13 (belum render final)**
-**Preview:** `renders/PREVIEW_bezza_testimoni_v13.mp4` (540×960, watermark)
+**Hasil edit:** 49.6s, 1080×1920, 30fps — **status: PREVIEW v14 (kualiti penuh, tanpa watermark; belum diluluskan sebagai final)**
+**Preview:** `renders/PREVIEW_bezza_testimoni_v14.mp4` (540×960, watermark)
+
+## Perubahan v14 — reframe, grade, bunyi, "jangan nampak AI edit"
+
+- **Reframing ikut siapa bercakap.** Kedudukan muka Jo & customer dikesan setiap klip (YuNet, `build/faces.json`). Setiap shot dibingkai semula: close (1.3×) pada customer bila dia bercakap, medium pada Jo, wide two-shot pada babak berdua (delivery, "boleh?", "sebab sebelum ni"). Dalam setiap shot ada tolakan perlahan macam operator kamera, potongan biasa (hard cut) antara shot. End card buka ke wide two-shot thumbs-up.
+- **Buang tanda "AI edit":** tiada lagi flash putih, gegaran skrin, bunyi pop/impact pada setiap kad. Tinggal 2 bunyi halus sahaja (swish lembut masuk intro, klik butang).
+- **Caption:** fade lebih lembut, bayang lebih kemas, pil kata kunci dikurangkan kepada nombor penting sahaja ("2 kali", "3 hari", "1 minggu", "2 minggu", "kali kedua").
+- **Warna & kecerahan** (media-treatment HyperFrames, `build/grading.json`): exposure +0.12, contrast +0.1, highlights −0.12, shadows +0.1, vibrance +0.2, sedikit hangat, vignette lembut.
+- **Kualiti video:** sharpen ringan (unsharp 0.55) dibakar ke footage; render kualiti penuh (CRF 16), tanpa watermark.
+- **Warna suara:** EQ suara — kurang dengung 220 Hz (−2 dB), kejelasan 3.4 kHz (+2.5 dB), "udara" 9 kHz (+1.5 dB) — sebelum leveller.
 
 ## Perubahan v13
 

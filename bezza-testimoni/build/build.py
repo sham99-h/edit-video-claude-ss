@@ -91,9 +91,7 @@ CORRECTIONS = {
     70.46: [],                     # "so" (filler)
 }
 KEEP_CASE = {"SA", "X", "PJ."}
-HIGHLIGHT = {"3", "hari", "bank", "cepat", "1", "minggu", "2", "kedua", "loan",
-             "jo", "bezza", "rawang", "dibayar", "beg", "biru",
-             "bukan", "iklan", "kali", "hashim", "serius"}
+HIGHLIGHT = {"2", "kali", "3", "hari", "1", "minggu"}
 
 # ---------------------------------------------------------------------------
 # helpers
@@ -321,16 +319,8 @@ DUR = {"whoosh": 0.57, "whoosh-short": 0.57, "pop": 0.72, "impact-bass-1": 2.1,
 CUT_HOOK = seg_start("a1")
 CUT_CTA = seg_start("o")
 SFX = [
-    ("pop",           T["duakali"] + 0.05, 0.9), # hook "KALI KE-2" pulse
-    ("whoosh",        CUT_HOOK,         0.7),    # hook -> intro flash
-    ("whoosh-short",  ns + 0.15,        0.5),    # name card wipe
-    ("pop",           ds + 0.2,         0.8),    # delivery card
-    ("pop",           ks + 0.3,         0.8),    # KALI KE-2
-    ("impact-bass-1", T["minggu1"] + 0.1, 0.2),  # 1 MINGGU slam
-    ("whoosh",        CUT_CTA,          0.6),    # jump to CTA flash
-    ("pop",           T["berminat"] - 0.1, 0.8),
-    ("click",         T["biru"] + 0.18, 1.2),    # button press
-    ("whoosh-short",  es + 0.15,        0.45),   # end card
+    ("whoosh-short",  CUT_HOOK,         0.3),    # soft swish into the intro
+    ("click",         T["biru"] + 0.18, 0.7),    # button press
 ]
 
 # ---------------------------------------------------------------------------
@@ -352,7 +342,7 @@ for gi, g in enumerate(groups):
     if gs < T["tekan"] < ge:          # the CTA button takes the caption spot: clear out first
         ge = fr(T["tekan"] - 0.05)
     text_len = sum(len(w["text"]) for w in g) + len(g) - 1
-    fs = int(min(56, 820 / max(1, text_len * 0.52)))
+    fs = int(min(54, 820 / max(1, text_len * 0.52)))
     runs = []  # consecutive keywords share one pill
     for w in g:
         hl = re.sub(r"[^\w]", "", w["text"].lower()) in HIGHLIGHT
@@ -365,15 +355,15 @@ for gi, g in enumerate(groups):
              for ri, (hl, ws) in enumerate(runs)]
     cap_body.append(f'    <div id="cg{gi}" class="cg" style="font-size:{fs}px;">{" ".join(spans)}</div>')
     cap_js.append(f'tl.set("#cg{gi}",{{visibility:"visible"}},{gs:.3f});')
-    cap_js.append(f'tl.fromTo("#cg{gi}",{{opacity:0,y:8}},{{opacity:1,y:0,duration:0.08,ease:"power2.out"}},{gs:.3f});')
+    cap_js.append(f'tl.fromTo("#cg{gi}",{{opacity:0,y:6}},{{opacity:1,y:0,duration:0.12,ease:"power2.out"}},{gs:.3f});')
     cap_js.append(f'tl.to("#cg{gi}",{{opacity:0,duration:0.08,ease:"power2.in"}},{ge - 0.08:.3f});')
     cap_js.append(f'tl.set("#cg{gi}",{{opacity:0,visibility:"hidden"}},{ge:.3f});')
 
 cap_css = """
 #root{position:absolute;inset:0;font-family:'Inter',sans-serif;}
-.cg{position:absolute;left:110px;right:110px;top:1340px;text-align:center;font-weight:650;line-height:1.3;letter-spacing:-.01em;color:#fff;opacity:0;visibility:hidden;overflow:visible;text-shadow:0 2px 3px rgba(0,0,0,.55),0 4px 18px rgba(0,0,0,.40);}
+.cg{position:absolute;left:110px;right:110px;top:1340px;text-align:center;font-weight:600;line-height:1.32;letter-spacing:-.005em;color:#fff;opacity:0;visibility:hidden;overflow:visible;text-shadow:0 1px 2px rgba(0,0,0,.6),0 3px 14px rgba(0,0,0,.45);}
 .cw{display:inline;}
-.cw.hl{display:inline-block;padding:0 12px 2px;margin:0 2px;border-radius:12px;background:#FFFFFF;color:#B0182F;font-weight:800;text-shadow:none;box-shadow:0 4px 16px rgba(0,0,0,.28);}
+.cw.hl{display:inline-block;padding:0 10px 2px;margin:0 2px;border-radius:10px;background:#FFFFFF;color:#B0182F;font-weight:800;text-shadow:none;box-shadow:0 4px 16px rgba(0,0,0,.28);}
 """
 (comp / "captions.html").write_text(f"""<template>
   <style>{cap_css}</style>
@@ -389,10 +379,11 @@ cap_css = """
 """)
 
 # root index.html
+GRADING = html.escape(json.dumps(json.load(open(ROOT / "build/grading.json")), separators=(",", ":")))
 vids = []
 for i, (sid, a, b, o, sc) in enumerate(timeline):
     d = fr((b - a) / RATE.get(sid, 1.0))
-    vids.append(f'      <video id="v-{sid}" class="clip" src="{SRC}" data-start="{o}" data-duration="{d}" '
+    vids.append(f'      <video id="v-{sid}" data-color-grading="{GRADING}" class="clip" src="{SRC}" data-start="{o}" data-duration="{d}" '
                 f'data-media-start="{a}" data-playback-rate="{RATE.get(sid, 1.0)}" data-track-index="0" data-has-audio="true" '
                 f'data-fade-in="0.02" data-fade-out="0.03" playsinline></video>')
 
@@ -411,21 +402,37 @@ for i, (name, t, vol) in enumerate(SFX):
     sfx_tags.append(f'    <audio id="sfx{i:02d}" class="clip" src="assets/sfx/{name}.mp3" data-start="{st}" '
                     f'data-duration="{du}" data-track-index="3" data-volume="{vol}"></audio>')
 
-# camera moves: punch scale per segment, flash on the 2 big cuts, shake on slams
+# camera: reframe on whoever is talking (face positions from build/faces.json),
+# hard cuts between framings, a slow push inside each shot like a handheld operator.
+FACES = json.load(open(ROOT / "build/faces.json"))
+FRAMING = {  # segment: (subject, scale at start, scale at end)
+    "hook": ("cust", 1.22, 1.30), "a1": ("jo", 1.12, 1.16), "a2": ("jo", 1.30, 1.32),
+    "b": ("two", 1.00, 1.04), "c": ("jo", 1.20, 1.24), "d": ("two", 1.06, 1.08),
+    "e": ("cust", 1.22, 1.27), "f1": ("cust", 1.34, 1.36), "f2": ("cust", 1.24, 1.26),
+    "deal": ("cust", 1.18, 1.28), "h": ("cust", 1.34, 1.38), "i": ("two", 1.06, 1.10),
+    "j": ("cust", 1.24, 1.30), "k": ("jo", 1.28, 1.30), "l1": ("jo", 1.22, 1.26),
+    "n1": ("cust", 1.20, 1.30), "o": ("jo", 1.16, 1.22),
+}
+FACE_AT = (540, 860)   # where the subject's face lands on screen
+def frame(sid, sc):
+    f = FACES[sid]
+    if FRAMING[sid][0] == "two" or not f.get(FRAMING[sid][0]):
+        pts = [v for v in (f.get("cust"), f.get("jo")) if v]
+        fx = sum(v[0] for v in pts) / len(pts); fy = sum(v[1] for v in pts) / len(pts)
+    else:
+        fx, fy = f[FRAMING[sid][0]][:2]
+    x = min(0.0, max(W - sc * W, FACE_AT[0] - sc * fx))
+    y = min(0.0, max(H - sc * H, FACE_AT[1] - sc * fy))
+    return round(x, 1), round(y, 1)
 cam_js = []
 for sid, a, b, o, sc in timeline:
-    cam_js.append(f'tl.set("#cam",{{scale:{sc},x:0,y:0}},{o});')
-cam_js.append(f'tl.fromTo("#cam",{{scale:1.3}},{{scale:1.0,duration:0.45,ease:"expo.out"}},{CUT_HOOK});')
-cam_js.append(f'tl.fromTo("#cam",{{scale:1.25}},{{scale:1.0,duration:0.45,ease:"expo.out"}},{CUT_CTA});')
-cam_js.append('tl.set("#flash",{opacity:0},0);')
-for c in (CUT_HOOK, CUT_CTA):
-    cam_js.append(f'tl.fromTo("#flash",{{opacity:0}},{{opacity:0.9,duration:0.06,ease:"power2.in"}},{fr(c - 0.06)});')
-    cam_js.append(f'tl.to("#flash",{{opacity:0,duration:0.22,ease:"power2.out"}},{c});')
-for t, amp in ((T["minggu1"] + 0.1, 10),):
-    cam_js.append(f'tl.to("#cam",{{keyframes:[{{x:{amp},y:-{amp//2},duration:0.04}},{{x:-{amp},y:{amp//2},duration:0.05}},'
-                  f'{{x:{amp//2},y:0,duration:0.05}},{{x:0,y:0,duration:0.06}}]}},{t:.3f});')
-# slow push inside the long CTA segment keeps the frame alive
-cam_js.append(f'tl.to("#cam",{{scale:1.08,duration:{fr(T["salam"] - CUT_CTA - 0.5)},ease:"none"}},{fr(CUT_CTA + 0.5)});')
+    _, s0, s1 = FRAMING[sid]
+    e = seg_end(sid) if sid != "o" else T["salam"] - 0.1
+    x0, y0 = frame(sid, s0); x1, y1 = frame(sid, s1)
+    cam_js.append(f'tl.set("#cam",{{scale:{s0},x:{x0},y:{y0}}},{o});')
+    cam_js.append(f'tl.to("#cam",{{scale:{s1},x:{x1},y:{y1},duration:{fr(e - o - 0.01)},ease:"sine.inOut"}},{o});')
+# end card: ease out to the wide two-shot (both thumbs up)
+cam_js.append(f'tl.to("#cam",{{scale:1.0,x:0,y:0,duration:0.9,ease:"power2.inOut"}},{fr(T["salam"] - 0.1)});')
 
 index = f"""<!doctype html>
 <html lang="ms" data-resolution="portrait">
@@ -437,9 +444,8 @@ index = f"""<!doctype html>
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
       html, body {{ margin: 0; width: {W}px; height: {H}px; overflow: hidden; background: #000; }}
       #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; }}
-      #cam {{ position: absolute; inset: 0; transform-origin: 50% 49%; }}
+      #cam {{ position: absolute; inset: 0; transform-origin: 0 0; }}
       #cam video {{ position: absolute; left: 0; top: 0; width: {W}px; height: {H}px; object-fit: cover; }}
-      #flash {{ position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 50; pointer-events: none; }}
     </style>
   </head>
   <body>
@@ -450,7 +456,6 @@ index = f"""<!doctype html>
     </div>
 {chr(10).join(hosts)}
     <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="2" data-track-kind="captions" data-width="{W}" data-height="{H}" style="z-index:40;"></div>
-    <div id="flash"></div>
 {chr(10).join(sfx_tags)}
     </div>
     <script>

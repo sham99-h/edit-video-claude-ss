@@ -160,54 +160,14 @@
  ],
  "sfx": [
   {
-   "name": "pop",
-   "at": 0.38,
-   "vol": 0.9
-  },
-  {
-   "name": "whoosh",
-   "at": 2.07,
-   "vol": 0.7
-  },
-  {
    "name": "whoosh-short",
-   "at": 2.67,
-   "vol": 0.5
-  },
-  {
-   "name": "pop",
-   "at": 7.33,
-   "vol": 0.8
-  },
-  {
-   "name": "pop",
-   "at": 15.37,
-   "vol": 0.8
-  },
-  {
-   "name": "impact-bass-1",
-   "at": 28.23,
-   "vol": 0.2
-  },
-  {
-   "name": "whoosh",
-   "at": 42.1,
-   "vol": 0.6
-  },
-  {
-   "name": "pop",
-   "at": 43.43,
-   "vol": 0.8
+   "at": 2.07,
+   "vol": 0.3
   },
   {
    "name": "click",
    "at": 45.61,
-   "vol": 1.2
-  },
-  {
-   "name": "whoosh-short",
-   "at": 46.62,
-   "vol": 0.45
+   "vol": 0.7
   }
  ],
  "captions": [

@@ -2,7 +2,7 @@
 """Rebuild footage audio: every clip at the same loudness, no distortion.
 usage: python3 build/audio_balance.py <original_drive_video> assets/footage.mp4
 
-1. mild spectral denoise on the original (afftdn) so boosted quiet clips don't bring up hiss
+1. mild spectral denoise + voice EQ (less boom at 220 Hz, presence at 3.4 kHz, air) on the original
 2. per-region gain (edit segments from build/edl.json, split where the speaker changes),
    applied as a smooth sample-accurate gain envelope (ramps, no hard switches)
 3. gentle compressor, static normalisation to -15 LUFS, true-peak limiter that only
@@ -42,7 +42,8 @@ def lufs_file(f, t0=None, d=None):
 
 # 1. decode + mild denoise (mono speech)
 den = os.path.join(tmp, "den.wav")
-ff("-i", src, "-vn", "-ac", "1", "-ar", str(SR), "-af", "highpass=f=70,afftdn=nr=8:nf=-50:tn=1", "-c:a", "pcm_f32le", den)
+ff("-i", src, "-vn", "-ac", "1", "-ar", str(SR), "-af", "highpass=f=80,afftdn=nr=8:nf=-50:tn=1,"
+   "equalizer=f=220:t=q:w=1.1:g=-2,equalizer=f=3400:t=q:w=1.0:g=2.5,treble=g=1.5:f=9000", "-c:a", "pcm_f32le", den)
 x, _ = sf.read(den, dtype="float32")
 t = np.arange(len(x)) / SR
 
